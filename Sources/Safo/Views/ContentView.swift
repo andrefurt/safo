@@ -12,6 +12,9 @@ struct ContentView: View {
                 .background(Tokens.Colors.background)
         }
         .navigationSplitViewStyle(.prominentDetail)
+        .toolbar {
+            ToolbarItems(viewModel: viewModel)
+        }
     }
 
     @ViewBuilder
