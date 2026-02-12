@@ -27,7 +27,8 @@ struct MarkdownDocument: Identifiable, Equatable {
             throw SafoError.fileNotFound(fileURL.path)
         }
 
-        guard fileURL.pathExtension.lowercased() == "md" else {
+        let ext = fileURL.pathExtension.lowercased()
+        guard ext == "md" || ext == "markdown" else {
             throw SafoError.notMarkdownFile(fileURL.path)
         }
 
