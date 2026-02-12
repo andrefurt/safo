@@ -5,7 +5,7 @@ import Foundation
 final class DocumentViewModel: ObservableObject {
     @Published var document: MarkdownDocument?
     @Published var directoryListing: DirectoryListing?
-    @Published private(set) var sidebarVisible = false
+    @Published var sidebarVisible = false
     @Published var error: SafoError?
 
     private var fileWatcher: FileWatcher?

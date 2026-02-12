@@ -4,17 +4,34 @@ struct ContentView: View {
     @ObservedObject var viewModel: DocumentViewModel
 
     var body: some View {
-        Group {
-            if let error = viewModel.error, viewModel.document == nil || error == .fileDeleted {
-                ErrorStateView(error: error)
-            } else if let document = viewModel.document {
-                MarkdownContentView(content: document.content)
-            } else {
-                EmptyStateView()
-            }
+        NavigationSplitView(columnVisibility: sidebarBinding) {
+            SidebarView(viewModel: viewModel)
+        } detail: {
+            detailContent
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Tokens.Colors.background)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Tokens.Colors.background)
+        .navigationSplitViewStyle(.prominentDetail)
+    }
+
+    @ViewBuilder
+    private var detailContent: some View {
+        if let error = viewModel.error, viewModel.document == nil || error == .fileDeleted {
+            ErrorStateView(error: error)
+        } else if let document = viewModel.document {
+            MarkdownContentView(content: document.content)
+        } else {
+            EmptyStateView()
+        }
+    }
+
+    private var sidebarBinding: Binding<NavigationSplitViewVisibility> {
+        Binding(
+            get: { viewModel.sidebarVisible ? .doubleColumn : .detailOnly },
+            set: { newValue in
+                viewModel.sidebarVisible = newValue != .detailOnly
+            }
+        )
     }
 }
 
