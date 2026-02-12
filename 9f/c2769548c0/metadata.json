@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "9fc2769548c0",
+  "strategy": "manual-commit",
+  "branch": "chore/homebrew-distribution",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "Package.swift",
+    "Resources/Info.plist",
+    "Sources/Safo/Models/DirectoryListing.swift",
+    "Sources/Safo/Models/MarkdownDocument.swift",
+    "Sources/Safo/SafoApp.swift",
+    "Sources/safo-cli/SafoCLI.swift",
+    "docs/00-roadmap.md",
+    "docs/claude-code-hook.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9f/c2769548c0/0/metadata.json",
+      "transcript": "/9f/c2769548c0/0/full.jsonl",
+      "context": "/9f/c2769548c0/0/context.md",
+      "content_hash": "/9f/c2769548c0/0/content_hash.txt",
+      "prompt": "/9f/c2769548c0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 10192,
+    "cache_read_tokens": 1052175,
+    "output_tokens": 968,
+    "api_call_count": 12
+  }
+}
