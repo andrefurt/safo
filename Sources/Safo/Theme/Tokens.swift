@@ -33,8 +33,6 @@ enum Tokens {
         static let h6Tracking: CGFloat = 0.5
         static let h6BottomSpacing: CGFloat = 8
 
-        static let headingTopSpacing: CGFloat = 24
-
         // Body
         static let bodySize: CGFloat = 15
         static let bodyWeight: Font.Weight = .regular
@@ -54,6 +52,8 @@ enum Tokens {
         static let headingTopSpacing: CGFloat = 24
         static let codeBlockPadding: CGFloat = 16
         static let codeBlockRadius: CGFloat = 8
+        // MarkdownUI inline TextStyle does not support padding/radius; these tokens
+        // are defined per spec for use if the API adds inline container styling.
         static let inlineCodePaddingH: CGFloat = 5
         static let inlineCodePaddingV: CGFloat = 2
         static let inlineCodeRadius: CGFloat = 4
@@ -61,6 +61,8 @@ enum Tokens {
         static let blockquotePaddingLeft: CGFloat = 16
         static let tableCellPaddingH: CGFloat = 12
         static let tableCellPaddingV: CGFloat = 8
+        // MarkdownUI handles list indentation internally; token defined per spec
+        // for potential future customization.
         static let listIndent: CGFloat = 24
     }
 

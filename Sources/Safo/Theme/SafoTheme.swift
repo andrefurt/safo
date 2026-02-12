@@ -27,7 +27,7 @@ extension Theme {
         .heading1 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h1BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h1BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h1Weight)
                     FontSize(Tokens.Typography.h1Size)
@@ -37,7 +37,7 @@ extension Theme {
         .heading2 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h2BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h2BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h2Weight)
                     FontSize(Tokens.Typography.h2Size)
@@ -47,34 +47,37 @@ extension Theme {
         .heading3 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h3BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h3BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h3Weight)
                     FontSize(Tokens.Typography.h3Size)
+                    TextTracking(Tokens.Typography.h3Tracking)
                 }
         }
         .heading4 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h4BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h4BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h4Weight)
                     FontSize(Tokens.Typography.h4Size)
+                    TextTracking(Tokens.Typography.h4Tracking)
                 }
         }
         .heading5 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h5BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h5BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h5Weight)
                     FontSize(Tokens.Typography.h5Size)
+                    TextTracking(Tokens.Typography.h5Tracking)
                 }
         }
         .heading6 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
-                .markdownMargin(top: Tokens.Typography.headingTopSpacing, bottom: Tokens.Typography.h6BottomSpacing)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Typography.h6BottomSpacing)
                 .markdownTextStyle {
                     FontWeight(Tokens.Typography.h6Weight)
                     FontSize(Tokens.Typography.h6Size)

@@ -77,7 +77,7 @@ Phase 1 established the project foundation and core rendering pipeline.
 - Code theme switching driven by `@Environment(\.colorScheme)` for automatic dark/light adaptation
 - All colors are semantic SwiftUI colors or token-defined, no hardcoded values in views
 
-**Files created (7):**
+**Files created (9):**
 - `Package.swift`
 - `Sources/Safo/SafoApp.swift`
 - `Sources/Safo/AppDelegate.swift`

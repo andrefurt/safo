@@ -42,7 +42,7 @@ enum CodeTheme {
 
 // MARK: - Splash to SwiftUI Text output format
 
-struct TextOutputFormat: OutputFormat {
+private struct TextOutputFormat: OutputFormat {
     private let theme: Splash.Theme
 
     init(theme: Splash.Theme) {
