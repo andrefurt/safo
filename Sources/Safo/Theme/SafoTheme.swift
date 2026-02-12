@@ -148,6 +148,6 @@ extension Theme {
         .thematicBreak {
             Divider()
                 .overlay(Tokens.Colors.separator)
-                .markdownMargin(top: 24, bottom: 24)
+                .markdownMargin(top: Tokens.Spacing.headingTopSpacing, bottom: Tokens.Spacing.headingTopSpacing)
         }
 }
