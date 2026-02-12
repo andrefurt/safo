@@ -4,7 +4,7 @@
 
 | Phase | Name | Branch | Tasks | Status |
 |-------|------|--------|-------|--------|
-| 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | Not started |
+| 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | In progress |
 | 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Not started |
 | 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Not started |
 
@@ -30,36 +30,63 @@ correctly on the right side.
 
 ### Tasks
 
-- [ ] 1.1: Create `Package.swift` with two targets: `Safo` (macOS app, .executableTarget) and `safo-cli` (executable). Add MarkdownUI and Splash as dependencies. Verify `swift build` compiles both targets.
+- [x] 1.1: Create `Package.swift` with two targets: `Safo` (macOS app, .executableTarget) and `safo-cli` (executable). Add MarkdownUI and Splash as dependencies. Verify `swift build` compiles both targets.
 
-- [ ] 1.2: Create `Sources/Safo/SafoApp.swift` with `@main` App struct, `WindowGroup`, and `@NSApplicationDelegateAdaptor`. Create minimal `ContentView` that shows "Safo" text. Verify app launches.
+- [x] 1.2: Create `Sources/Safo/SafoApp.swift` with `@main` App struct, `WindowGroup`, and `@NSApplicationDelegateAdaptor`. Create minimal `ContentView` that shows "Safo" text. Verify app launches.
 
-- [ ] 1.3: Create `Sources/Safo/AppDelegate.swift`. Implement `applicationDidFinishLaunching` to position window: 40% screen width, full height, right side. Use `NSScreen.main.visibleFrame`. See patterns #2.
+- [x] 1.3: Create `Sources/Safo/AppDelegate.swift`. Implement `applicationDidFinishLaunching` to position window: 40% screen width, full height, right side. Use `NSScreen.main.visibleFrame`. See patterns #2.
 
-- [ ] 1.4: Create `Sources/Safo/Theme/Tokens.swift`. Define all design tokens from `03-design-tokens.md`: typography (sizes, weights, tracking), spacing (padding, gaps, radii), layout (sidebar width, max content width, window ratio), colors (semantic SwiftUI colors).
+- [x] 1.4: Create `Sources/Safo/Theme/Tokens.swift`. Define all design tokens from `03-design-tokens.md`: typography (sizes, weights, tracking), spacing (padding, gaps, radii), layout (sidebar width, max content width, window ratio), colors (semantic SwiftUI colors).
 
-- [ ] 1.5: Create `Sources/Safo/Theme/SafoTheme.swift`. Build custom MarkdownUI `Theme` using tokens. Style paragraphs (15pt, 1.65 line spacing), all 6 heading levels (see token table), blockquotes (left border + padding), lists (indentation + bullet/number styles), horizontal rules, links (accent color), strong/emphasis/strikethrough inline styles, inline code (background pill, monospace). See patterns #0.
+- [x] 1.5: Create `Sources/Safo/Theme/SafoTheme.swift`. Build custom MarkdownUI `Theme` using tokens. Style paragraphs (15pt, 1.65 line spacing), all 6 heading levels (see token table), blockquotes (left border + padding), lists (indentation + bullet/number styles), horizontal rules, links (accent color), strong/emphasis/strikethrough inline styles, inline code (background pill, monospace). See patterns #0.
 
-- [ ] 1.6: Create `Sources/Safo/Theme/CodeTheme.swift`. Build two Splash `Theme` variants: dark and light. Map all code token colors from `03-design-tokens.md`. Code blocks get background color, rounded corners (8pt radius), padding (16pt). See patterns #1.
+- [x] 1.6: Create `Sources/Safo/Theme/CodeTheme.swift`. Build two Splash `Theme` variants: dark and light. Map all code token colors from `03-design-tokens.md`. Code blocks get background color, rounded corners (8pt radius), padding (16pt). See patterns #1.
 
-- [ ] 1.7: Create `Sources/Safo/Views/MarkdownContentView.swift`. ScrollView with `Markdown(content)` using SafoTheme. Apply code syntax highlighter. Center content with maxWidth (720pt), apply content padding. Switch Splash theme based on `@Environment(\.colorScheme)`. See patterns #8.
+- [x] 1.7: Create `Sources/Safo/Views/MarkdownContentView.swift`. ScrollView with `Markdown(content)` using SafoTheme. Apply code syntax highlighter. Center content with maxWidth (720pt), apply content padding. Switch Splash theme based on `@Environment(\.colorScheme)`. See patterns #8.
 
-- [ ] 1.8: Update `ContentView` to render a comprehensive test markdown string. Include: H1-H6, paragraphs, bold, italic, strikethrough, links, blockquote, unordered list, ordered list, nested list, task list, inline code, code block (Swift), code block (TypeScript), code block (no language), table, horizontal rule. This is the test fixture for visual QA.
+- [x] 1.8: Update `ContentView` to render a comprehensive test markdown string. Include: H1-H6, paragraphs, bold, italic, strikethrough, links, blockquote, unordered list, ordered list, nested list, task list, inline code, code block (Swift), code block (TypeScript), code block (no language), table, horizontal rule. This is the test fixture for visual QA.
 
-- [ ] 1.9: Style tables in SafoTheme: cell padding (12H/8V), separator borders, header row with medium weight text. Verify tables render correctly with the test markdown.
+- [x] 1.9: Style tables in SafoTheme: cell padding (12H/8V), separator borders, header row with medium weight text. Verify tables render correctly with the test markdown.
 
-- [ ] 1.10: Verify dark mode rendering. Launch app, toggle system appearance (System Settings or `Cmd+Shift+A` in simulator). All colors must adapt: text, backgrounds, code blocks, borders, links. Fix any hardcoded colors.
+- [x] 1.10: Verify dark mode rendering. Launch app, toggle system appearance (System Settings or `Cmd+Shift+A` in simulator). All colors must adapt: text, backgrounds, code blocks, borders, links. Fix any hardcoded colors.
 
-- [ ] 1.11: Verify light mode rendering. Same as 1.10 but for light mode. Ensure code block colors switch to light Splash theme. Ensure sufficient contrast on all elements.
+- [x] 1.11: Verify light mode rendering. Same as 1.10 but for light mode. Ensure code block colors switch to light Splash theme. Ensure sufficient contrast on all elements.
 
-- [ ] 1.12: Write Phase 1 summary in this file below.
+- [x] 1.12: Write Phase 1 summary in this file below.
 
 - [ ] 1.13: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
 - [ ] 1.14: Final commit, PR to main, merge after review passes.
 
 ### Phase 1 Summary
-_Agent fills this in after completing the phase._
+
+Phase 1 established the project foundation and core rendering pipeline.
+
+**What was built:**
+- `Package.swift` with two targets (Safo app, safo-cli) and dependencies (MarkdownUI 2.4.1, Splash 0.16.0)
+- SwiftUI app lifecycle with `@NSApplicationDelegateAdaptor` for window positioning (40% width, right side, full height)
+- Complete design token system (`Tokens.swift`) covering typography, spacing, layout, colors, code colors, and animation values
+- Custom MarkdownUI theme (`SafoTheme.swift`) styling all block and inline elements: 6 heading levels with distinct sizes/weights/tracking, paragraphs with 1.65 line spacing, blockquotes with left border, styled tables, lists, horizontal rules, links, strong/emphasis/strikethrough, and inline code
+- Splash-based code syntax highlighting (`CodeTheme.swift`) with dark and light variants, wired into MarkdownUI via `CodeSyntaxHighlighter` protocol
+- `MarkdownContentView` with scrollable, centered (720pt max), padded content that switches Splash theme based on system color scheme
+- Comprehensive test markdown fixture covering all supported elements
+
+**Architecture decisions:**
+- Used absolute font sizes in theme (not relative em units) since the design spec defines exact point sizes
+- Splash `TextOutputFormat` adapted for macOS (NSColor instead of UIColor)
+- Code theme switching driven by `@Environment(\.colorScheme)` for automatic dark/light adaptation
+- All colors are semantic SwiftUI colors or token-defined, no hardcoded values in views
+
+**Files created (7):**
+- `Package.swift`
+- `Sources/Safo/SafoApp.swift`
+- `Sources/Safo/AppDelegate.swift`
+- `Sources/Safo/Theme/Tokens.swift`
+- `Sources/Safo/Theme/SafoTheme.swift`
+- `Sources/Safo/Theme/CodeTheme.swift`
+- `Sources/Safo/Views/ContentView.swift`
+- `Sources/Safo/Views/MarkdownContentView.swift`
+- `Sources/safo-cli/SafoCLI.swift`
 
 ---
 
