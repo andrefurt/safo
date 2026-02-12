@@ -1,119 +1,76 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel: DocumentViewModel
+
     var body: some View {
-        MarkdownContentView(content: Self.testMarkdown)
+        Group {
+            if let error = viewModel.error, viewModel.document == nil || error == .fileDeleted {
+                ErrorStateView(error: error)
+            } else if let document = viewModel.document {
+                MarkdownContentView(content: document.content)
+            } else {
+                EmptyStateView()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Tokens.Colors.background)
     }
 }
 
-// MARK: - Test fixture
+// MARK: - Error state
 
-extension ContentView {
-    static let testMarkdown = """
-    # Heading 1
+private struct ErrorStateView: View {
+    let error: SafoError
 
-    ## Heading 2
-
-    ### Heading 3
-
-    #### Heading 4
-
-    ##### Heading 5
-
-    ###### Heading 6
-
-    ---
-
-    This is a regular paragraph with **bold text**, *italic text*, and ~~strikethrough text~~. \
-    Here is some `inline code` and a [link to Significa](https://significa.co).
-
-    > This is a blockquote. It should have a left border and secondary text color. \
-    > It can span multiple lines and contain **bold** and *italic* text.
-
-    ## Lists
-
-    Unordered list:
-
-    - First item
-    - Second item
-      - Nested item A
-      - Nested item B
-    - Third item
-
-    Ordered list:
-
-    1. First step
-    2. Second step
-       1. Sub-step one
-       2. Sub-step two
-    3. Third step
-
-    Task list:
-
-    - [x] Completed task
-    - [ ] Incomplete task
-    - [x] Another completed task
-
-    ## Code
-
-    Inline code: `let x = 42`
-
-    Swift code block:
-
-    ```swift
-    import SwiftUI
-
-    struct ContentView: View {
-        @State private var count = 0
-
-        var body: some View {
-            VStack(spacing: 16) {
-                Text("Count: \\(count)")
-                    .font(.title)
-
-                Button("Increment") {
-                    count += 1
-                }
+    var body: some View {
+        VStack(spacing: 6) {
+            Text(title)
+                .font(.system(size: Tokens.Typography.bodySize, weight: .medium))
+                .foregroundStyle(Tokens.Colors.textSecondary)
+            if let detail {
+                Text(detail)
+                    .font(.system(size: Tokens.Typography.codeSize))
+                    .foregroundStyle(Tokens.Colors.textTertiary)
             }
-            .padding()
         }
     }
-    ```
 
-    TypeScript code block:
-
-    ```typescript
-    interface User {
-        id: string;
-        name: string;
-        email: string;
+    private var title: String {
+        switch error {
+        case .fileNotFound:
+            return "File not found"
+        case .notMarkdownFile:
+            return "Safo only opens markdown files"
+        case .permissionDenied:
+            return "Cannot read file: permission denied"
+        case .emptyFile:
+            return "Empty file"
+        case .fileDeleted:
+            return "File was deleted"
+        }
     }
 
-    async function fetchUser(id: string): Promise<User> {
-        const response = await fetch(`/api/users/${id}`);
-        return response.json();
+    private var detail: String? {
+        switch error {
+        case .fileNotFound(let path):
+            return path
+        case .notMarkdownFile(let path):
+            return path
+        case .permissionDenied(let path):
+            return path
+        case .emptyFile, .fileDeleted:
+            return nil
+        }
     }
-    ```
+}
 
-    Code block without language:
+// MARK: - Empty state (no file opened)
 
-    ```
-    plain text code block
-    no syntax highlighting
-    just monospace font
-    ```
-
-    ## Table
-
-    | Feature | Status | Notes |
-    |---------|--------|-------|
-    | Markdown rendering | Done | Using MarkdownUI |
-    | Syntax highlighting | Done | Using Splash |
-    | Dark mode | Done | System adaptive |
-    | File watching | Pending | Phase 2 |
-
-    ---
-
-    End of test fixture.
-    """
+private struct EmptyStateView: View {
+    var body: some View {
+        Text("Open a markdown file to get started")
+            .font(.system(size: Tokens.Typography.bodySize))
+            .foregroundStyle(Tokens.Colors.textTertiary)
+    }
 }
