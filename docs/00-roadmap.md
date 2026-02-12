@@ -2,17 +2,19 @@
 
 ## Overview
 
-| Phase | Name | Tasks | Status |
-|-------|------|-------|--------|
-| 1 | Setup & Core Rendering | 13 | Not started |
-| 2 | Navigation & File Operations | 11 | Not started |
-| 3 | CLI, Integration & Polish | 9 | Not started |
+| Phase | Name | Branch | Tasks | Status |
+|-------|------|--------|-------|--------|
+| 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | Not started |
+| 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Not started |
+| 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Not started |
 
-Total: 33 tasks across 3 phases
+Total: 36 tasks across 3 phases
 
 ---
 
 ## Phase 1: Setup & Core Rendering (13 tasks)
+
+**Branch:** `feature/phase-1-core-rendering` (from `main`)
 
 **Goal:** App launches, renders a hardcoded markdown string with full custom theme
 (typography, colors, code highlighting), adapts to dark/light mode. Window positions
@@ -52,14 +54,18 @@ correctly on the right side.
 
 - [ ] 1.12: Write Phase 1 summary in this file below.
 
-- [ ] 1.13: Git commit: "phase 1: setup and core markdown rendering with custom theme"
+- [ ] 1.13: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+
+- [ ] 1.14: Final commit, PR to main, merge after review passes.
 
 ### Phase 1 Summary
 _Agent fills this in after completing the phase._
 
 ---
 
-## Phase 2: Navigation & File Operations (11 tasks)
+## Phase 2: Navigation & File Operations (12 tasks)
+
+**Branch:** `feature/phase-2-navigation` (from updated `main` after Phase 1 merge)
 
 **Goal:** App opens a real .md file from disk, watches it for changes, shows sidebar with
 directory files, supports prev/next navigation, and copies markdown source.
@@ -94,14 +100,18 @@ directory files, supports prev/next navigation, and copies markdown source.
 
 - [ ] 2.10: Write Phase 2 summary in this file below.
 
-- [ ] 2.11: Git commit: "phase 2: file operations, sidebar navigation, file watching"
+- [ ] 2.11: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+
+- [ ] 2.12: Final commit, PR to main, merge after review passes.
 
 ### Phase 2 Summary
 _Agent fills this in after completing the phase._
 
 ---
 
-## Phase 3: CLI, Integration & Polish (9 tasks)
+## Phase 3: CLI, Integration & Polish (10 tasks)
+
+**Branch:** `feature/phase-3-cli-integration` (from updated `main` after Phase 2 merge)
 
 **Goal:** `safo file.md` works from terminal. Single instance behavior. Claude Code hook
 documented. All edge cases handled. App is usable for daily work.
@@ -131,7 +141,9 @@ documented. All edge cases handled. App is usable for daily work.
 
 - [ ] 3.8: Write Phase 3 summary in this file below.
 
-- [ ] 3.9: Git commit: "phase 3: CLI tool, URL scheme, single instance, edge cases"
+- [ ] 3.9: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+
+- [ ] 3.10: Final commit, PR to main, merge after review passes.
 
 ### Phase 3 Summary
 _Agent fills this in after completing the phase._

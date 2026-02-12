@@ -38,10 +38,19 @@ Current approved dependencies: MarkdownUI, Splash. Nothing else.
 
 ## Git
 
-- Branch convention: feature/, fix/, chore/
+- Never commit directly to main.
+- Each phase gets its own branch: `feature/phase-1-core-rendering`, `feature/phase-2-navigation`, etc.
+- Commit frequently within a phase. Every completed task (or logical chunk) gets a commit.
 - Commits: natural language, infinitive tense. "add sidebar navigation", "fix file watcher debounce"
-- Never commit directly to main. Use feature branches.
 - One logical change per commit.
+- At the end of each phase: PR to main, review, merge.
+
+## Quality Gates (mandatory)
+
+After completing each phase, before merging:
+1. Invoke `superpowers:verification-before-completion` to verify all tasks are done and working.
+2. Invoke `superpowers:requesting-code-review` for code review against standards and roadmap.
+3. Only merge after both pass. No exceptions.
 
 ## Key Decisions
 
