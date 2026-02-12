@@ -38,8 +38,7 @@ struct MarkdownDocument: Identifiable, Equatable {
             throw SafoError.permissionDenied(fileURL.path)
         }
 
-        let attributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-        let lastModified = attributes[.modificationDate] as? Date ?? Date()
+        let lastModified = (try? FileManager.default.attributesOfItem(atPath: fileURL.path))?[.modificationDate] as? Date ?? Date()
 
         return MarkdownDocument(
             id: fileURL,

@@ -34,7 +34,7 @@ struct SidebarView: View {
             viewModel.navigateTo(url: url)
         } label: {
             Text(url.lastPathComponent)
-                .font(.system(size: 13))
+                .font(.system(size: Tokens.Typography.sidebarSize))
                 .foregroundStyle(isCurrent ? Tokens.Colors.accent : Tokens.Colors.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -62,8 +62,17 @@ private extension SidebarView {
         var rootFiles: [URL] = []
         var folderMap: [String: [URL]] = [:]
 
+        let rootPath = listing.rootURL.path
+
         for file in listing.files {
-            let relativePath = file.path.replacingOccurrences(of: listing.rootURL.path + "/", with: "")
+            let filePath = file.path
+            let relativePath: String
+            if filePath.hasPrefix(rootPath) {
+                let stripped = String(filePath.dropFirst(rootPath.count))
+                relativePath = stripped.hasPrefix("/") ? String(stripped.dropFirst()) : stripped
+            } else {
+                relativePath = file.lastPathComponent
+            }
             let components = relativePath.split(separator: "/")
 
             if components.count == 1 {

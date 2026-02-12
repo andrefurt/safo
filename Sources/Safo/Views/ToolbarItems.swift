@@ -35,11 +35,11 @@ struct ToolbarItems: ToolbarContent {
             if let document = viewModel.document {
                 VStack(spacing: 1) {
                     Text(document.fileName)
-                        .font(.system(size: 13, weight: .medium))
+                        .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .medium))
                         .foregroundStyle(Tokens.Colors.textPrimary)
                     if let listing = viewModel.directoryListing {
                         Text(document.relativePath(to: listing.rootURL))
-                            .font(.system(size: 11))
+                            .font(.system(size: Tokens.Typography.toolbarSubtitleSize))
                             .foregroundStyle(Tokens.Colors.textSecondary)
                     }
                 }

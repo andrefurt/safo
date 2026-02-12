@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import SwiftUI
 
 @MainActor
 final class DocumentViewModel: ObservableObject {
@@ -13,6 +14,54 @@ final class DocumentViewModel: ObservableObject {
     // MARK: - Navigation
 
     func open(url: URL) {
+        loadFile(url: url, rescanDirectory: true)
+    }
+
+    func navigateToNext() {
+        guard var listing = directoryListing, listing.hasNext else { return }
+        listing.goToNext()
+        directoryListing = listing
+        if let file = listing.currentFile {
+            loadFile(url: file, rescanDirectory: false)
+        }
+    }
+
+    func navigateToPrevious() {
+        guard var listing = directoryListing, listing.hasPrevious else { return }
+        listing.goToPrevious()
+        directoryListing = listing
+        if let file = listing.currentFile {
+            loadFile(url: file, rescanDirectory: false)
+        }
+    }
+
+    func navigateTo(url: URL) {
+        guard var listing = directoryListing else {
+            open(url: url)
+            return
+        }
+        listing.goTo(url: url)
+        directoryListing = listing
+        loadFile(url: url, rescanDirectory: false)
+    }
+
+    // MARK: - Actions
+
+    func copyToClipboard() {
+        guard let content = document?.content else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(content, forType: .string)
+    }
+
+    func toggleSidebar() {
+        withAnimation(Tokens.Animation.sidebar) {
+            sidebarVisible.toggle()
+        }
+    }
+
+    // MARK: - Private
+
+    private func loadFile(url: URL, rescanDirectory: Bool) {
         error = nil
         fileWatcher?.stop()
         fileWatcher = nil
@@ -26,8 +75,10 @@ final class DocumentViewModel: ObservableObject {
 
             document = doc
 
-            let directory = url.deletingLastPathComponent()
-            directoryListing = DirectoryListing.scan(directory: directory, currentFile: url.standardizedFileURL)
+            if rescanDirectory {
+                let directory = url.deletingLastPathComponent()
+                directoryListing = DirectoryListing.scan(directory: directory, currentFile: url.standardizedFileURL)
+            }
 
             fileWatcher = FileWatcher(url: url) { [weak self] in
                 self?.reloadCurrentFile()
@@ -40,42 +91,6 @@ final class DocumentViewModel: ObservableObject {
             document = nil
         }
     }
-
-    func navigateToNext() {
-        guard var listing = directoryListing, listing.hasNext else { return }
-        listing.goToNext()
-        directoryListing = listing
-        if let file = listing.currentFile {
-            open(url: file)
-        }
-    }
-
-    func navigateToPrevious() {
-        guard var listing = directoryListing, listing.hasPrevious else { return }
-        listing.goToPrevious()
-        directoryListing = listing
-        if let file = listing.currentFile {
-            open(url: file)
-        }
-    }
-
-    func navigateTo(url: URL) {
-        open(url: url)
-    }
-
-    // MARK: - Actions
-
-    func copyToClipboard() {
-        guard let content = document?.content else { return }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(content, forType: .string)
-    }
-
-    func toggleSidebar() {
-        sidebarVisible.toggle()
-    }
-
-    // MARK: - Private
 
     private func reloadCurrentFile() {
         guard let currentURL = document?.url else { return }

@@ -44,7 +44,7 @@ private struct ErrorStateView: View {
     let error: SafoError
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: Tokens.Spacing.errorStateGap) {
             Text(title)
                 .font(.system(size: Tokens.Typography.bodySize, weight: .medium))
                 .foregroundStyle(Tokens.Colors.textSecondary)
