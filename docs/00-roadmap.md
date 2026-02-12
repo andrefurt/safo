@@ -4,7 +4,7 @@
 
 | Phase | Name | Branch | Tasks | Status |
 |-------|------|--------|-------|--------|
-| 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | In progress |
+| 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | Complete |
 | 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Not started |
 | 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Not started |
 
@@ -56,7 +56,7 @@ correctly on the right side.
 
 - [x] 1.13: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
-- [ ] 1.14: Final commit, PR to main, merge after review passes.
+- [x] 1.14: Final commit, PR to main, merge after review passes.
 
 ### Phase 1 Summary
 
