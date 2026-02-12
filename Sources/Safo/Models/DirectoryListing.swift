@@ -45,7 +45,8 @@ struct DirectoryListing: Equatable {
 
         var files: [URL] = []
         for case let fileURL as URL in enumerator {
-            if fileURL.pathExtension.lowercased() == "md" {
+            let ext = fileURL.pathExtension.lowercased()
+            if ext == "md" || ext == "markdown" {
                 files.append(fileURL)
             }
         }

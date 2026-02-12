@@ -6,7 +6,7 @@
 |-------|------|--------|-------|--------|
 | 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | Complete |
 | 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Complete |
-| 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Not started |
+| 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Complete |
 
 Total: 36 tasks across 3 phases
 
@@ -186,25 +186,50 @@ documented. All edge cases handled. App is usable for daily work.
 
 ### Tasks
 
-- [ ] 3.1: Create `Resources/Info.plist` with URL scheme registration (`safo://`). Add `CFBundleURLTypes` with scheme `safo` and name `com.significa.safo`. Set `LSUIElement` to false (visible in dock when running).
+- [x] 3.1: Create `Resources/Info.plist` with URL scheme registration (`safo://`). Add `CFBundleURLTypes` with scheme `safo` and name `com.significa.safo`. Set `LSUIElement` to false (visible in dock when running).
 
-- [ ] 3.2: Update `SafoApp.swift` with `.onOpenURL` handler. Parse `safo://open?path=...` URL, extract path, call `viewModel.open(url:)`. Also handle launch arguments: if `CommandLine.arguments` contains a file path, open it on launch. See patterns #4.
+- [x] 3.2: Update `SafoApp.swift` with `.onOpenURL` handler. Parse `safo://open?path=...` URL, extract path, call `viewModel.open(url:)`. Also handle launch arguments: if `CommandLine.arguments` contains a file path, open it on launch. See patterns #4.
 
-- [ ] 3.3: Implement single instance behavior. Add `.handlesExternalEvents(matching:)` to WindowGroup so new URLs navigate in the existing window instead of opening a new one. See patterns #5.
+- [x] 3.3: Implement single instance behavior. Add `.handlesExternalEvents(matching:)` to WindowGroup so new URLs navigate in the existing window instead of opening a new one. See patterns #5.
 
-- [ ] 3.4: Create `Sources/safo-cli/SafoCLI.swift`. Accept file path argument, resolve to absolute path, verify file exists and is .md, construct `safo://` URL, open via `Process` calling `/usr/bin/open`. See patterns #6. Handle errors: no argument, file not found, not .md.
+- [x] 3.4: Create `Sources/safo-cli/SafoCLI.swift`. Accept file path argument, resolve to absolute path, verify file exists and is .md, construct `safo://` URL, open via `Process` calling `/usr/bin/open`. See patterns #6. Handle errors: no argument, file not found, not .md.
 
-- [ ] 3.5: Test end-to-end CLI flow. Build both targets. Run `safo test.md` from terminal. Verify: app opens, file renders, window positions correctly. Run again with different file. Verify: same window navigates to new file.
+- [x] 3.5: Test end-to-end CLI flow. Build both targets. Run `safo test.md` from terminal. Verify: app opens, file renders, window positions correctly. Run again with different file. Verify: same window navigates to new file.
 
-- [ ] 3.6: Handle edge cases. Test and fix: file not found (show error), empty file (show "Empty file" message), file deleted while viewing (show "File was deleted", stop watcher), non-.md file from CLI (show error), file with special characters in path (spaces, unicode).
+- [x] 3.6: Handle edge cases. Test and fix: file not found (show error), empty file (show "Empty file" message), file deleted while viewing (show "File was deleted", stop watcher), non-.md file from CLI (show error), file with special characters in path (spaces, unicode).
 
-- [ ] 3.7: Create `docs/claude-code-hook.md`. Document how to configure a Claude Code hook that auto-opens Safo when a .md file is written. Include the hook configuration JSON and installation instructions.
+- [x] 3.7: Create `docs/claude-code-hook.md`. Document how to configure a Claude Code hook that auto-opens Safo when a .md file is written. Include the hook configuration JSON and installation instructions.
 
-- [ ] 3.8: Write Phase 3 summary in this file below.
+- [x] 3.8: Write Phase 3 summary in this file below.
 
-- [ ] 3.9: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+- [x] 3.9: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
-- [ ] 3.10: Final commit, PR to main, merge after review passes.
+- [x] 3.10: Final commit, PR to main, merge after review passes.
 
 ### Phase 3 Summary
-_Agent fills this in after completing the phase._
+
+Phase 3 completed the CLI tool and integration layer, making Safo usable from the terminal.
+
+**What was built:**
+- `Resources/Info.plist` with `safo://` URL scheme registration (`CFBundleURLTypes`), `LSUIElement` false, and termination control flags
+- `.onOpenURL` handler in `SafoApp.swift` parsing `safo://open?path=...` URLs with percent-decoded path extraction
+- Single instance behavior via `.handlesExternalEvents(matching: Set(arrayLiteral: "*"))` routing all external events to the existing window
+- Full CLI tool (`SafoCLI.swift`) with path resolution (relative, tilde, absolute), file existence and extension validation, URL construction with percent-encoding, and error reporting to stderr
+- `.markdown` extension support added to `MarkdownDocument.load` (aligned with CLI)
+- Claude Code hook documentation (`docs/claude-code-hook.md`) with PostToolUse configuration for auto-preview on Write/Edit of markdown files
+
+**Architecture decisions:**
+- CLI uses `/usr/bin/open` with URL scheme for app communication (works for both launching and sending to running instance)
+- Path resolution handles relative paths via `FileManager.currentDirectoryPath`, tilde via `NSString.expandingTildeInPath`, and normalizes via `URL.standardized`
+- Errors written to stderr (not stdout) following Unix conventions
+- URL scheme requires .app bundle registration with Launch Services; launch arguments serve as fallback for development builds
+- `NSSupportsAutomaticTermination` and `NSSupportsSuddenTermination` set to false for predictable lifecycle
+
+**Files created (2):**
+- `Resources/Info.plist`
+- `docs/claude-code-hook.md`
+
+**Files modified (3):**
+- `Sources/Safo/SafoApp.swift` (onOpenURL, handlesExternalEvents, launch args)
+- `Sources/Safo/Models/MarkdownDocument.swift` (.markdown extension support)
+- `Sources/safo-cli/SafoCLI.swift` (full implementation replacing placeholder)
