@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "efe188f8ab03",
+  "session_id": "eff795b0-6517-4729-909f-2c05ad82a41a",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-12T17:23:17.968494Z",
+  "branch": "feature/phase-1-core-rendering",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "Package.swift",
+    "Sources/Safo/AppDelegate.swift",
+    "Sources/Safo/SafoApp.swift",
+    "Sources/Safo/Theme/CodeTheme.swift",
+    "Sources/Safo/Theme/SafoTheme.swift",
+    "Sources/Safo/Theme/Tokens.swift",
+    "Sources/Safo/Views/ContentView.swift",
+    "Sources/Safo/Views/MarkdownContentView.swift",
+    "Sources/safo-cli/SafoCLI.swift",
+    "docs/00-roadmap.md"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 109,
+    "cache_creation_tokens": 112445,
+    "cache_read_tokens": 8314678,
+    "output_tokens": 11918,
+    "api_call_count": 105
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-12T17:23:17.566405Z",
+    "agent_lines": 633,
+    "human_added": 89,
+    "human_modified": 11,
+    "human_removed": 0,
+    "total_committed": 733,
+    "agent_percentage": 86.3574351978172
+  },
+  "transcript_path": ".claude/projects/-Users-andrefurt-code-safo/eff795b0-6517-4729-909f-2c05ad82a41a.jsonl"
+}
