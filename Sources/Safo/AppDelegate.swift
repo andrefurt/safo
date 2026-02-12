@@ -12,7 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let window = NSApplication.shared.windows.first else { return }
 
         let screenFrame = screen.visibleFrame
-        let width = screenFrame.width * 0.4
+        let width = screenFrame.width * Tokens.Layout.windowWidthRatio
 
         let frame = NSRect(
             x: screenFrame.maxX - width,
