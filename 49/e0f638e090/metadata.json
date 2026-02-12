@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "49e0f638e090",
+  "strategy": "manual-commit",
+  "branch": "feature/phase-1-core-rendering",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/00-roadmap.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/49/e0f638e090/0/metadata.json",
+      "transcript": "/49/e0f638e090/0/full.jsonl",
+      "context": "/49/e0f638e090/0/context.md",
+      "content_hash": "/49/e0f638e090/0/content_hash.txt",
+      "prompt": "/49/e0f638e090/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 9,
+    "cache_creation_tokens": 1864,
+    "cache_read_tokens": 868380,
+    "output_tokens": 473,
+    "api_call_count": 7
+  }
+}
