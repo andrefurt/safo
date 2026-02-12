@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "9fc2769548c0",
+  "session_id": "23e9a61f-32b3-435e-8c67-55c2e1e2f0ff",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-12T22:11:19.442802Z",
+  "branch": "chore/homebrew-distribution",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".claude/settings.json",
+    ".gitignore",
+    "Makefile"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 30,
+    "cache_creation_tokens": 27856,
+    "cache_read_tokens": 999131,
+    "output_tokens": 841,
+    "api_call_count": 26
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-12T22:11:19.391572Z",
+    "agent_lines": 68,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 84,
+    "total_committed": 68,
+    "agent_percentage": 100
+  },
+  "transcript_path": ".claude/projects/-Users-andrefurt-code-safo/23e9a61f-32b3-435e-8c67-55c2e1e2f0ff.jsonl"
+}

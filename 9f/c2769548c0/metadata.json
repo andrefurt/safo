@@ -3,8 +3,11 @@
   "checkpoint_id": "9fc2769548c0",
   "strategy": "manual-commit",
   "branch": "chore/homebrew-distribution",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
+    ".claude/settings.json",
+    ".gitignore",
+    "Makefile",
     "Package.swift",
     "Resources/Info.plist",
     "Sources/Safo/Models/DirectoryListing.swift",
@@ -21,13 +24,20 @@
       "context": "/9f/c2769548c0/0/context.md",
       "content_hash": "/9f/c2769548c0/0/content_hash.txt",
       "prompt": "/9f/c2769548c0/0/prompt.txt"
+    },
+    {
+      "metadata": "/9f/c2769548c0/1/metadata.json",
+      "transcript": "/9f/c2769548c0/1/full.jsonl",
+      "context": "/9f/c2769548c0/1/context.md",
+      "content_hash": "/9f/c2769548c0/1/content_hash.txt",
+      "prompt": "/9f/c2769548c0/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 22,
-    "cache_creation_tokens": 10192,
-    "cache_read_tokens": 1052175,
-    "output_tokens": 968,
-    "api_call_count": 12
+    "input_tokens": 52,
+    "cache_creation_tokens": 38048,
+    "cache_read_tokens": 2051306,
+    "output_tokens": 1809,
+    "api_call_count": 38
   }
 }
