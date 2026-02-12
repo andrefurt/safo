@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "05bb5205d4b7",
+  "strategy": "manual-commit",
+  "branch": "chore/release-automation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/release.yml",
+    ".gitignore",
+    "LICENSE",
+    "Makefile",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/05/bb5205d4b7/0/metadata.json",
+      "transcript": "/05/bb5205d4b7/0/full.jsonl",
+      "context": "/05/bb5205d4b7/0/context.md",
+      "content_hash": "/05/bb5205d4b7/0/content_hash.txt",
+      "prompt": "/05/bb5205d4b7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 27,
+    "cache_creation_tokens": 9907,
+    "cache_read_tokens": 1033002,
+    "output_tokens": 1054,
+    "api_call_count": 17
+  }
+}

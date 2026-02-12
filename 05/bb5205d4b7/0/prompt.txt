@@ -1,0 +1,128 @@
+Implement the following plan:
+
+# Plano: Distribuição via Homebrew
+
+## Contexto
+
+O Safo está completo (3 fases) mas não é instalável por outros. Precisamos de um caminho de distribuição para a equipa: `brew install` que instale o .app bundle (com URL scheme) e o CLI (`safo`).
+
+## Estratégia
+
+**Uma cask** no tap `andrefurt/homebrew-safo` que instala tudo: Safo.app em /Applications e o binário `safo` no PATH. Uma cask (não formula) porque precisamos distribuir o .app bundle pré-compilado para que o URL scheme `safo://` funcione.
+
+**Code signing**: ad-hoc por agora (free). Utilizadores fazem right-click > Open na primeira vez. Quando/se houver Apple Developer Program, basta mudar o signing no Makefile.
+
+## Implementação
+
+### 1. Makefile no repo safo
+
+Ficheiro: `Makefile`
+
+Targets:
+- `build`: `swift build -c release`
+- `bundle`: cria estrutura `Safo.app/Contents/{MacOS,Resources,Info.plist}`, copia binários, ad-hoc sign
+- `package`: cria `Safo-{version}.zip` com Safo.app + safo (CLI renomeado)
+- `install`: instala localmente (cp .app para /Applications, safo para /usr/local/bin)
+- `uninstall`: remove ambos
+
+A estrutura do .app bundle:
+```
+Safo.app/
+└── Contents/
+    ├── Info.plist          (de Resources/Info.plist)
+    ├── MacOS/
+    │   └── Safo            (binário compilado)
+    └── Resources/
+```
+
+O CLI binary é renomeado de `safo-cli` para `safo` na instalação.
+
+### 2. Criar repo andrefurt/homebrew-safo
+
+Estrutura:
+```
+homebrew-safo/
+├── Casks/
+│   └── safo.rb
+└── README.md
+```
+
+A cask (`Casks/safo.rb`):
+- Descarrega `Safo-{version}.zip` do GitHub Release do repo safo
+- Instala `Safo.app` em /Applications
+- Instala `safo` binary em PATH via stanza `binary`
+- SHA256 do zip para verificação
+
+### 3. Processo de release
+
+Manual por agora (automatizável com GitHub Actions depois):
+1. Bump version no Makefile
+2. `make package` (gera o zip)
+3. Criar GitHub Release no repo safo, upload o zip
+4. Copiar SHA256, atualizar cask no repo homebrew-safo
+5. Commit e push no homebrew-safo
+
+### 4. Experiência do utilizador
+
+```bash
+brew tap andrefurt/safo
+brew install --cask safo
+
+# Primeira vez: right-click Safo.app > Open (Gatekeeper ad-hoc)
+# Depois disso:
+safo file.md
+```
+
+## Ficheiros a criar/modificar
+
+| Ficheiro | Repo | Ação |
+|----------|------|------|
+| `Makefile` | safo | Criar |
+| `Casks/safo.rb` | homebrew-safo | Criar |
+| `README.md` | homebrew-safo | Criar |
+
+## Verificação
+
+1. `make build` compila sem erros
+2. `make bundle` cria .app funcional (abre, renderiza markdown)
+3. `make package` gera zip com ambos os artefactos
+4. `make install` instala localmente, `safo README.md` abre o app
+5. Criar release, testar `brew tap andrefurt/safo && brew install --cask safo` numa máquina limpa
+
+## Fora de scope (futuro)
+
+- GitHub Actions para automatizar releases
+- Developer ID signing + notarização
+- Homebrew bottles (binários pré-compilados para install mais rápido)
+- Formula separada para quem só quer o CLI sem o .app
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/andrefurt/.claude/projects/-Users-andrefurt-code-safo/92023f7e-249a-4df3-be41-54dff58da4b9.jsonl
+
+---
+
+faz commit e prepara o PR
+
+---
+
+merge o PR
+
+---
+
+cria o release v0.1.0, adicionar readme no github, tags, labels, descrição titulo. ficar com a página completa
+
+---
+
+o que é o sha? não é info sensivel? o que falta fazer?
+
+---
+
+sim, cria e faz push
+
+---
+
+basicamente tenho 2 repos agora? e se fizer actualizações os users recebem notificação para fazer update?
+
+---
+
+cria o github action para automatizar
