@@ -8,19 +8,31 @@ struct SafoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: viewModel)
+                .onOpenURL { url in
+                    handleOpenURL(url)
+                }
                 .task {
-                    openInitialFile()
+                    openFromLaunchArguments()
                 }
         }
+        .handlesExternalEvents(matching: Set(arrayLiteral: "*"))
     }
 
-    private func openInitialFile() {
-        // Check launch arguments for a file path (Phase 3 will add URL scheme handling)
+    private func handleOpenURL(_ url: URL) {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let path = components.queryItems?.first(where: { $0.name == "path" })?.value
+        else { return }
+
+        let fileURL = URL(fileURLWithPath: path)
+        viewModel.open(url: fileURL)
+    }
+
+    private func openFromLaunchArguments() {
         let args = CommandLine.arguments
-        if args.count > 1 {
-            let path = args[1]
-            let url = URL(fileURLWithPath: path)
-            viewModel.open(url: url)
-        }
+        guard args.count > 1 else { return }
+
+        let path = args[1]
+        let url = URL(fileURLWithPath: path)
+        viewModel.open(url: url)
     }
 }
