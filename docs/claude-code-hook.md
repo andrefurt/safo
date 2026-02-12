@@ -55,5 +55,5 @@ cp .build/release/safo-cli /usr/local/bin/safo
 ## Notes
 
 - The hook only triggers for markdown files. All other file types are ignored.
-- If the Safo app is not installed as a .app bundle with URL scheme registration, the CLI falls back to launching the binary directly via launch arguments.
+- The URL scheme (`safo://`) requires the app to be installed as a .app bundle registered with Launch Services. For development builds via `swift build`, pass the file path as a launch argument instead.
 - The hook runs asynchronously and does not block Claude Code.

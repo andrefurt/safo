@@ -16,7 +16,8 @@ struct SafoCLI {
             exit(1)
         }
 
-        guard absolutePath.hasSuffix(".md") || absolutePath.hasSuffix(".markdown") else {
+        let fileExtension = URL(fileURLWithPath: absolutePath).pathExtension.lowercased()
+        guard fileExtension == "md" || fileExtension == "markdown" else {
             printError("not a markdown file: \(absolutePath)")
             exit(1)
         }
@@ -42,25 +43,26 @@ struct SafoCLI {
     }
 
     private static func resolveAbsolutePath(_ rawPath: String) -> String {
-        if rawPath.hasPrefix("/") {
-            return rawPath
-        }
+        let expanded: String
 
         if rawPath.hasPrefix("~") {
-            return NSString(string: rawPath).expandingTildeInPath
+            expanded = NSString(string: rawPath).expandingTildeInPath
+        } else if !rawPath.hasPrefix("/") {
+            let cwd = FileManager.default.currentDirectoryPath
+            expanded = URL(fileURLWithPath: cwd).appendingPathComponent(rawPath).path
+        } else {
+            expanded = rawPath
         }
 
-        let cwd = FileManager.default.currentDirectoryPath
-        let url = URL(fileURLWithPath: cwd).appendingPathComponent(rawPath)
-        return url.standardized.path
+        return URL(fileURLWithPath: expanded).standardized.path
     }
 
     private static func printUsage() {
         let message = """
-        Usage: safo <file.md>
+Usage: safo <file.md>
 
-        Open a markdown file in Safo for preview.
-        """
+Open a markdown file in Safo for preview.
+"""
         FileHandle.standardError.write(Data(message.utf8))
         FileHandle.standardError.write(Data("\n".utf8))
     }

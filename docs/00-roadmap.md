@@ -229,7 +229,7 @@ Phase 3 completed the CLI tool and integration layer, making Safo usable from th
 - `Resources/Info.plist`
 - `docs/claude-code-hook.md`
 
-**Files modified (2):**
+**Files modified (3):**
 - `Sources/Safo/SafoApp.swift` (onOpenURL, handlesExternalEvents, launch args)
 - `Sources/Safo/Models/MarkdownDocument.swift` (.markdown extension support)
 - `Sources/safo-cli/SafoCLI.swift` (full implementation replacing placeholder)
