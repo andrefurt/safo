@@ -54,7 +54,7 @@ correctly on the right side.
 
 - [x] 1.12: Write Phase 1 summary in this file below.
 
-- [ ] 1.13: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+- [x] 1.13: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
 - [ ] 1.14: Final commit, PR to main, merge after review passes.
 
