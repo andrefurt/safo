@@ -43,6 +43,13 @@ enum Tokens {
         // Code
         static let codeSize: CGFloat = 13
         static let codeBlockLineSpacing: CGFloat = 1.5
+
+        // Sidebar
+        static let sidebarSize: CGFloat = 13
+
+        // Toolbar
+        static let toolbarTitleSize: CGFloat = 13
+        static let toolbarSubtitleSize: CGFloat = 11
     }
 
     enum Spacing {
@@ -59,6 +66,7 @@ enum Tokens {
         static let inlineCodeRadius: CGFloat = 4
         static let blockquoteBorderWidth: CGFloat = 3
         static let blockquotePaddingLeft: CGFloat = 16
+        static let errorStateGap: CGFloat = 6
         static let tableCellPaddingH: CGFloat = 12
         static let tableCellPaddingV: CGFloat = 8
         // MarkdownUI handles list indentation internally; token defined per spec

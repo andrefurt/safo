@@ -5,7 +5,7 @@
 | Phase | Name | Branch | Tasks | Status |
 |-------|------|--------|-------|--------|
 | 1 | Setup & Core Rendering | `feature/phase-1-core-rendering` | 14 | Complete |
-| 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Not started |
+| 2 | Navigation & File Operations | `feature/phase-2-navigation` | 12 | Complete |
 | 3 | CLI, Integration & Polish | `feature/phase-3-cli-integration` | 10 | Not started |
 
 Total: 36 tasks across 3 phases
@@ -107,32 +107,66 @@ directory files, supports prev/next navigation, and copies markdown source.
 
 ### Tasks
 
-- [ ] 2.1: Create `Sources/Safo/Models/MarkdownDocument.swift`. Implement the model from `02-architecture.md`: id (URL), url, content, lastModified, computed fileName and relativePath. Add static method `load(from: URL) throws -> MarkdownDocument` that reads file content.
+- [x] 2.1: Create `Sources/Safo/Models/MarkdownDocument.swift`. Implement the model from `02-architecture.md`: id (URL), url, content, lastModified, computed fileName and relativePath. Add static method `load(from: URL) throws -> MarkdownDocument` that reads file content.
 
-- [ ] 2.2: Create `Sources/Safo/Models/DirectoryListing.swift`. Implement from `02-architecture.md`: rootURL, files array, currentIndex. Methods: `goToNext()`, `goToPrevious()`, `goTo(url:)`. Static method `scan(directory: URL) -> DirectoryListing` that finds all .md files recursively, sorted alphabetically, skipping hidden files. See patterns #7.
+- [x] 2.2: Create `Sources/Safo/Models/DirectoryListing.swift`. Implement from `02-architecture.md`: rootURL, files array, currentIndex. Methods: `goToNext()`, `goToPrevious()`, `goTo(url:)`. Static method `scan(directory: URL) -> DirectoryListing` that finds all .md files recursively, sorted alphabetically, skipping hidden files. See patterns #7.
 
-- [ ] 2.3: Create `Sources/Safo/Utilities/FileWatcher.swift`. DispatchSource-based file watcher. Watch for write, rename, delete events. Include debouncing (100ms). Re-create watcher on rename/delete. See patterns #3.
+- [x] 2.3: Create `Sources/Safo/Utilities/FileWatcher.swift`. DispatchSource-based file watcher. Watch for write, rename, delete events. Include debouncing (100ms). Re-create watcher on rename/delete. See patterns #3.
 
-- [ ] 2.4: Create `Sources/Safo/Utilities/SafoError.swift`. Define error enum: `fileNotFound(String)`, `notMarkdownFile(String)`, `permissionDenied(String)`, `emptyFile`, `fileDeleted`.
+- [x] 2.4: Create `Sources/Safo/Utilities/SafoError.swift`. Define error enum: `fileNotFound(String)`, `notMarkdownFile(String)`, `permissionDenied(String)`, `emptyFile`, `fileDeleted`.
 
-- [ ] 2.5: Create `Sources/Safo/ViewModels/DocumentViewModel.swift`. Implement from `02-architecture.md`: @Published document, directoryListing, sidebarVisible, error. Methods: open(url:), navigateToNext(), navigateToPrevious(), navigateTo(url:), copyToClipboard(), toggleSidebar(). Wire up FileWatcher on open. Handle all error cases.
+- [x] 2.5: Create `Sources/Safo/ViewModels/DocumentViewModel.swift`. Implement from `02-architecture.md`: @Published document, directoryListing, sidebarVisible, error. Methods: open(url:), navigateToNext(), navigateToPrevious(), navigateTo(url:), copyToClipboard(), toggleSidebar(). Wire up FileWatcher on open. Handle all error cases.
 
-- [ ] 2.6: Update `SafoApp.swift` to create `@StateObject DocumentViewModel`. Pass as `@ObservedObject` to `ContentView`. For now, accept a hardcoded file path for testing (will be replaced by CLI in Phase 3).
+- [x] 2.6: Update `SafoApp.swift` to create `@StateObject DocumentViewModel`. Pass as `@ObservedObject` to `ContentView`. For now, accept a hardcoded file path for testing (will be replaced by CLI in Phase 3).
 
-- [ ] 2.7: Update `ContentView` to use ViewModel. Show `MarkdownContentView` with `document.content`. Show error view when `error` is set. Replace hardcoded test markdown with real file content.
+- [x] 2.7: Update `ContentView` to use ViewModel. Show `MarkdownContentView` with `document.content`. Show error view when `error` is set. Replace hardcoded test markdown with real file content.
 
-- [ ] 2.8: Create `Sources/Safo/Views/SidebarView.swift`. List of .md files from `directoryListing`. Group by subfolder. Highlight current file. Click navigates. See `04-ui-components.md` for spec. Use `NavigationSplitView` or conditional sidebar with animation.
+- [x] 2.8: Create `Sources/Safo/Views/SidebarView.swift`. List of .md files from `directoryListing`. Group by subfolder. Highlight current file. Click navigates. See `04-ui-components.md` for spec. Use `NavigationSplitView` or conditional sidebar with animation.
 
-- [ ] 2.9: Create `Sources/Safo/Views/ToolbarItems.swift`. Implement toolbar: sidebar toggle (leading), prev/next arrows with disabled states (leading), file info center (filename + path), copy button (trailing). Add keyboard shortcuts: `Cmd+[`, `Cmd+]`, `Cmd+Shift+S`. See patterns #9 for copy feedback.
+- [x] 2.9: Create `Sources/Safo/Views/ToolbarItems.swift`. Implement toolbar: sidebar toggle (leading), prev/next arrows with disabled states (leading), file info center (filename + path), copy button (trailing). Add keyboard shortcuts: `Cmd+[`, `Cmd+]`, `Cmd+Shift+S`. See patterns #9 for copy feedback.
 
-- [ ] 2.10: Write Phase 2 summary in this file below.
+- [x] 2.10: Write Phase 2 summary in this file below.
 
-- [ ] 2.11: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+- [x] 2.11: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
-- [ ] 2.12: Final commit, PR to main, merge after review passes.
+- [x] 2.12: Final commit, PR to main, merge after review passes.
 
 ### Phase 2 Summary
-_Agent fills this in after completing the phase._
+
+Phase 2 added file operations and navigation, making Safo a functional markdown viewer.
+
+**What was built:**
+- `MarkdownDocument` model with file loading, error handling, and modification date tracking
+- `DirectoryListing` model with recursive `.md` file scanning (skips hidden files), alphabetical sorting, and prev/next/goTo navigation
+- `FileWatcher` using DispatchSource for live file monitoring with 100ms debounce and vim-compatible rename/delete handling (re-creates watcher when file is replaced)
+- `SafoError` enum covering all error states: file not found, not markdown, permission denied, empty file, file deleted
+- `DocumentViewModel` as the single source of truth: file loading, directory scanning, navigation, clipboard, sidebar toggle, and FileWatcher lifecycle management
+- `SidebarView` with grouped file list (root files first, then by subfolder), accent-highlighted current file, and click-to-navigate
+- `ToolbarItems` with sidebar toggle (`Cmd+Shift+S`), prev/next arrows (`Cmd+[`/`Cmd+]`) with disabled states, centered file info (name + relative path), and copy button with 1.5s "Copied" feedback
+- Error and empty states in ContentView with quiet, centered messaging
+- `NavigationSplitView` layout with `.prominentDetail` style for sidebar/content split
+
+**Architecture decisions:**
+- `relativePath` implemented as a method taking `rootURL` parameter (rather than stored property) to keep the model decoupled from directory context
+- Navigation (`navigateToNext/Previous/To`) skips directory rescanning, only `open(url:)` rescans (avoids double @Published writes)
+- `withAnimation(Tokens.Animation.sidebar)` applied in ViewModel's `toggleSidebar()` for consistent animation
+- `attributesOfItem` uses `try?` fallback since modification date is non-critical
+- Added dedicated typography tokens for sidebar (13pt) and toolbar (13pt title, 11pt subtitle) to avoid magic numbers
+
+**Files created (7):**
+- `Sources/Safo/Models/MarkdownDocument.swift`
+- `Sources/Safo/Models/DirectoryListing.swift`
+- `Sources/Safo/Utilities/SafoError.swift`
+- `Sources/Safo/Utilities/FileWatcher.swift`
+- `Sources/Safo/ViewModels/DocumentViewModel.swift`
+- `Sources/Safo/Views/SidebarView.swift`
+- `Sources/Safo/Views/ToolbarItems.swift`
+
+**Files modified (4):**
+- `Sources/Safo/SafoApp.swift` (added ViewModel, launch args)
+- `Sources/Safo/Views/ContentView.swift` (NavigationSplitView, error/empty states, toolbar)
+- `Sources/Safo/Theme/Tokens.swift` (added sidebar, toolbar, error state tokens)
+- `docs/00-roadmap.md` (this summary)
 
 ---
 
