@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "86ec15689df3",
+  "session_id": "8a24447a-b6c2-47dc-b882-4f6eb180002b",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-12T20:06:28.848993Z",
+  "branch": "feature/phase-2-navigation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "Sources/Safo/Models/DirectoryListing.swift",
+    "Sources/Safo/Models/MarkdownDocument.swift",
+    "Sources/Safo/SafoApp.swift",
+    "Sources/Safo/Theme/Tokens.swift",
+    "Sources/Safo/Utilities/FileWatcher.swift",
+    "Sources/Safo/Utilities/SafoError.swift",
+    "Sources/Safo/ViewModels/DocumentViewModel.swift",
+    "Sources/Safo/Views/ContentView.swift",
+    "Sources/Safo/Views/SidebarView.swift",
+    "Sources/Safo/Views/ToolbarItems.swift",
+    "docs/00-roadmap.md"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 111,
+    "cache_creation_tokens": 94133,
+    "cache_read_tokens": 7579986,
+    "output_tokens": 13114,
+    "api_call_count": 107
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-12T20:06:28.561295Z",
+    "agent_lines": 491,
+    "human_added": 149,
+    "human_modified": 51,
+    "human_removed": 0,
+    "total_committed": 691,
+    "agent_percentage": 71.05643994211289
+  },
+  "transcript_path": ".claude/projects/-Users-andrefurt-code-safo/8a24447a-b6c2-47dc-b882-4f6eb180002b.jsonl"
+}
