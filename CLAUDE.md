@@ -52,6 +52,22 @@ After completing each phase, before merging:
 2. Invoke `superpowers:requesting-code-review` for code review against standards and roadmap.
 3. Only merge after both pass. No exceptions.
 
+## Releases
+
+Two repos: `andrefurt/safo` (source code) and `andrefurt/homebrew-safo` (Homebrew tap).
+The tap repo name is a Homebrew convention. Users only see `brew tap andrefurt/safo`.
+
+Release process (automated via GitHub Action):
+
+1. Bump `VERSION` in `Makefile`
+2. Commit and push to main
+3. Create and push a tag: `git tag v0.2.0 && git push origin v0.2.0`
+4. The Action builds, creates a GitHub Release with the zip, and updates the Homebrew cask automatically
+
+Requires `HOMEBREW_TAP_TOKEN` secret in repo settings (PAT with `repo` scope).
+
+Regular commits do NOT trigger releases. Only tag pushes (`v*`) do.
+
 ## Key Decisions
 
 - No settings UI. Styles are opinionated and hardcoded.
