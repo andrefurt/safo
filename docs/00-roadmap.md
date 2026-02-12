@@ -202,9 +202,9 @@ documented. All edge cases handled. App is usable for daily work.
 
 - [x] 3.8: Write Phase 3 summary in this file below.
 
-- [ ] 3.9: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
+- [x] 3.9: Run quality gates: invoke `superpowers:verification-before-completion`, then `superpowers:requesting-code-review`. Fix any issues found.
 
-- [ ] 3.10: Final commit, PR to main, merge after review passes.
+- [x] 3.10: Final commit, PR to main, merge after review passes.
 
 ### Phase 3 Summary
 
