@@ -1,4 +1,4 @@
-VERSION := 0.2.1
+VERSION := 0.2.2
 APP_NAME := Safo
 CLI_NAME := safo
 BUNDLE_ID := com.significa.safo
@@ -24,6 +24,7 @@ bundle: build
 	mkdir -p $(APP_BUNDLE)/Contents/Resources
 	cp $(BIN_PATH)/$(APP_NAME) $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME)
 	cp Resources/Info.plist $(APP_BUNDLE)/Contents/Info.plist
+	cp Resources/AppIcon.icns $(APP_BUNDLE)/Contents/Resources/AppIcon.icns
 	/usr/libexec/PlistBuddy -c "Add :CFBundleName string $(APP_NAME)" $(APP_BUNDLE)/Contents/Info.plist
 	/usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string $(APP_NAME)" $(APP_BUNDLE)/Contents/Info.plist
 	/usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string $(BUNDLE_ID)" $(APP_BUNDLE)/Contents/Info.plist

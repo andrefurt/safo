@@ -13,6 +13,8 @@
             <string>com.significa.safo</string>
         </dict>
     </array>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>LSUIElement</key>
     <false/>
     <key>NSSupportsAutomaticTermination</key>
