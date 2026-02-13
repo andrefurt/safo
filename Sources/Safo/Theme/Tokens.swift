@@ -47,9 +47,11 @@ enum Tokens {
         // Sidebar
         static let sidebarSize: CGFloat = 13
 
-        // Toolbar
-        static let toolbarTitleSize: CGFloat = 13
-        static let toolbarSubtitleSize: CGFloat = 11
+        // Titlebar
+        static let titlebarSize: CGFloat = 13
+        static let titlebarIconSize: CGFloat = 14
+        static let titlebarNavIconSize: CGFloat = 12
+        static let titlebarDocIconSize: CGFloat = 10
     }
 
     enum Spacing {
@@ -72,17 +74,23 @@ enum Tokens {
         // MarkdownUI handles list indentation internally; token defined per spec
         // for potential future customization.
         static let listIndent: CGFloat = 24
+        static let titlebarGroupSpacing: CGFloat = 12
+        static let titlebarNavSpacing: CGFloat = 4
+        static let titlebarBreadcrumbSpacing: CGFloat = 6
+        static let copyButtonPaddingH: CGFloat = 12
+        static let copyButtonPaddingV: CGFloat = 5
+        static let copyButtonRadius: CGFloat = 6
     }
 
     enum Layout {
         static let sidebarWidth: CGFloat = 240
-        static let toolbarHeight: CGFloat = 44
         static let windowWidthRatio: CGFloat = 0.4
         static let maxContentWidth: CGFloat = 720
+        static let titlebarHeight: CGFloat = 44
+        static let titlebarLeadingInset: CGFloat = 68
         static let sidebarCornerRadius: CGFloat = 12
         static let sidebarBorderWidth: CGFloat = 1
         static let sidebarPadding: CGFloat = 16
-        static let titlebarHeight: CGFloat = 44
     }
 
     enum Colors {

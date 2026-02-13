@@ -13,7 +13,7 @@ struct TitlebarView: View {
         }
         .frame(height: Tokens.Layout.titlebarHeight)
         .padding(.horizontal, Tokens.Layout.sidebarPadding)
-        .padding(.leading, 68)
+        .padding(.leading, Tokens.Layout.titlebarLeadingInset)
     }
 
     // MARK: - Leading
@@ -27,23 +27,27 @@ struct TitlebarView: View {
         }
     }
 
-    private var noFileTitlebar: some View {
-        HStack(spacing: 12) {
-            Button {
-                viewModel.toggleSidebar()
-            } label: {
-                Image(systemName: "sidebar.left")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Tokens.Colors.textSecondary)
-            }
-            .buttonStyle(.plain)
+    private var sidebarToggleButton: some View {
+        Button {
+            viewModel.toggleSidebar()
+        } label: {
+            Image(systemName: "sidebar.left")
+                .font(.system(size: Tokens.Typography.titlebarIconSize, weight: .medium))
+                .foregroundStyle(Tokens.Colors.textSecondary)
+        }
+        .buttonStyle(.plain)
+    }
 
-            HStack(spacing: 4) {
+    private var noFileTitlebar: some View {
+        HStack(spacing: Tokens.Spacing.titlebarGroupSpacing) {
+            sidebarToggleButton
+
+            HStack(spacing: Tokens.Spacing.titlebarNavSpacing) {
                 Button {
                     viewModel.navigateToPrevious()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: Tokens.Typography.titlebarNavIconSize, weight: .medium))
                         .foregroundStyle(Tokens.Colors.textSecondary)
                 }
                 .buttonStyle(.plain)
@@ -53,7 +57,7 @@ struct TitlebarView: View {
                     viewModel.navigateToNext()
                 } label: {
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: Tokens.Typography.titlebarNavIconSize, weight: .medium))
                         .foregroundStyle(Tokens.Colors.textSecondary)
                 }
                 .buttonStyle(.plain)
@@ -61,22 +65,14 @@ struct TitlebarView: View {
             }
 
             Text("Safo")
-                .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .medium))
+                .font(.system(size: Tokens.Typography.titlebarSize, weight: .medium))
                 .foregroundStyle(Tokens.Colors.textPrimary)
         }
     }
 
     private func breadcrumb(document: MarkdownDocument, listing: DirectoryListing) -> some View {
-        HStack(spacing: 6) {
-            Button {
-                viewModel.toggleSidebar()
-            } label: {
-                Image(systemName: "sidebar.left")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Tokens.Colors.textSecondary)
-            }
-            .buttonStyle(.plain)
-
+        HStack(spacing: Tokens.Spacing.titlebarBreadcrumbSpacing) {
+            sidebarToggleButton
             breadcrumbSegments(document: document, listing: listing)
         }
     }
@@ -85,29 +81,29 @@ struct TitlebarView: View {
         let relativePath = document.relativePath(to: listing.rootURL)
         let components = relativePath.split(separator: "/").map(String.init)
 
-        return HStack(spacing: 4) {
+        return HStack(spacing: Tokens.Spacing.titlebarNavSpacing) {
             Text("Safo")
-                .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .regular))
+                .font(.system(size: Tokens.Typography.titlebarSize, weight: .regular))
                 .foregroundStyle(Tokens.Colors.textSecondary)
 
             ForEach(Array(components.enumerated()), id: \.offset) { index, component in
                 Text("/")
-                    .font(.system(size: Tokens.Typography.toolbarTitleSize))
+                    .font(.system(size: Tokens.Typography.titlebarSize))
                     .foregroundStyle(Tokens.Colors.textTertiary)
 
                 let isLast = index == components.count - 1
                 if isLast {
-                    HStack(spacing: 4) {
+                    HStack(spacing: Tokens.Spacing.titlebarNavSpacing) {
                         Image(systemName: "doc.text")
-                            .font(.system(size: 10))
+                            .font(.system(size: Tokens.Typography.titlebarDocIconSize))
                             .foregroundStyle(Tokens.Colors.textSecondary)
                         Text(component)
-                            .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .medium))
+                            .font(.system(size: Tokens.Typography.titlebarSize, weight: .medium))
                             .foregroundStyle(Tokens.Colors.textPrimary)
                     }
                 } else {
                     Text(component)
-                        .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .regular))
+                        .font(.system(size: Tokens.Typography.titlebarSize, weight: .regular))
                         .foregroundStyle(Tokens.Colors.textSecondary)
                 }
             }
@@ -125,13 +121,13 @@ struct TitlebarView: View {
             }
         } label: {
             Text(isCopied ? "Copied" : "Copy")
-                .font(.system(size: Tokens.Typography.toolbarTitleSize, weight: .medium))
+                .font(.system(size: Tokens.Typography.titlebarSize, weight: .medium))
                 .foregroundStyle(Tokens.Colors.textSecondary)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 5)
+                .padding(.horizontal, Tokens.Spacing.copyButtonPaddingH)
+                .padding(.vertical, Tokens.Spacing.copyButtonPaddingV)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Tokens.Colors.separator, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: Tokens.Spacing.copyButtonRadius)
+                        .stroke(Tokens.Colors.separator, lineWidth: Tokens.Layout.sidebarBorderWidth)
                 )
         }
         .buttonStyle(.plain)

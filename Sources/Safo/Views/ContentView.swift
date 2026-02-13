@@ -47,11 +47,11 @@ struct ContentView: View {
                     viewModel.toggleSidebar()
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: Tokens.Typography.titlebarNavIconSize, weight: .medium))
                         .foregroundStyle(Tokens.Colors.textSecondary)
                 }
                 .buttonStyle(.plain)
-                .padding(12)
+                .padding(Tokens.Spacing.titlebarGroupSpacing)
             }
 
             SidebarView(viewModel: viewModel)

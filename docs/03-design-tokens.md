@@ -40,6 +40,15 @@ H6 uses secondary text color to differentiate from body at similar size.
 | Inline code | SF Mono | 13 | inherits parent |
 | Code block | SF Mono | 13 | 1.5 (factor) |
 
+### Titlebar
+
+| Element | Size | Weight |
+|---------|------|--------|
+| Titlebar text | 13 | .medium |
+| Titlebar icon | 14 | .medium |
+| Navigation icon | 12 | .medium |
+| Document icon | 10 | - |
+
 ## Colors
 
 Custom colors defined per appearance (dark/light). Source values in OKLCH, implemented as hex in `Tokens.swift` via `NSColor.adaptive()`.
@@ -98,9 +107,13 @@ Dark mode palette (adapts for light):
 | Token | Value | Usage |
 |-------|-------|-------|
 | `sidebarWidth` | 240 | Sidebar width when expanded |
-| `toolbarHeight` | 44 | Toolbar height |
 | `windowWidthRatio` | 0.4 | Initial window width (40% of screen) |
 | `maxContentWidth` | 720 | Max width of markdown content (for readability) |
+| `titlebarHeight` | 44 | Custom titlebar height |
+| `titlebarLeadingInset` | 68 | Inset to clear traffic lights |
+| `sidebarCornerRadius` | 12 | Floating sidebar corner radius |
+| `sidebarBorderWidth` | 1 | Floating sidebar border width |
+| `sidebarPadding` | 16 | Floating sidebar margin from window edges |
 
 ## Animations
 
