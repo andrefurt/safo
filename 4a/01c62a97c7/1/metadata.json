@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "4a01c62a97c7",
+  "session_id": "b437cdf4-6e57-4dd2-a2b8-a6dfac5482c2",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-13T11:49:48.991098Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "Makefile",
+    "Resources/Info.plist"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "8a5ae058-aed8-42bf-9d69-5ee4bbbd1bc8",
+  "token_usage": {
+    "input_tokens": 7017,
+    "cache_creation_tokens": 38282,
+    "cache_read_tokens": 1102527,
+    "output_tokens": 2124,
+    "api_call_count": 27
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-13T11:49:48.918045Z",
+    "agent_lines": 2,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 3,
+    "agent_percentage": 66.66666666666666
+  },
+  "transcript_path": ".claude/projects/-Users-andrefurt-code-safo/b437cdf4-6e57-4dd2-a2b8-a6dfac5482c2.jsonl"
+}
