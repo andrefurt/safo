@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.4.3",
+  "checkpoint_id": "4a01c62a97c7",
+  "strategy": "manual-commit",
+  "branch": "chore/app-icon",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".claude/settings.json",
+    ".github/workflows/release.yml",
+    ".gitignore",
+    "CLAUDE.md",
+    "LICENSE",
+    "Makefile",
+    "Package.swift",
+    "README.md",
+    "Sources/Safo/AppDelegate.swift",
+    "Sources/Safo/SafoApp.swift",
+    "Sources/Safo/Theme/Tokens.swift",
+    "Sources/Safo/Views/ContentView.swift",
+    "Sources/Safo/Views/SidebarView.swift",
+    "Sources/Safo/Views/TitlebarView.swift",
+    "Sources/Safo/Views/ToolbarItems.swift",
+    "docs/03-design-tokens.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4a/01c62a97c7/0/metadata.json",
+      "transcript": "/4a/01c62a97c7/0/full.jsonl",
+      "context": "/4a/01c62a97c7/0/context.md",
+      "content_hash": "/4a/01c62a97c7/0/content_hash.txt",
+      "prompt": "/4a/01c62a97c7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 53,
+    "cache_creation_tokens": 7711,
+    "cache_read_tokens": 2755535,
+    "output_tokens": 3343,
+    "api_call_count": 27
+  }
+}
