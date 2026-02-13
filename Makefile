@@ -1,4 +1,4 @@
-VERSION := 0.1.1
+VERSION := 0.2.0
 APP_NAME := Safo
 CLI_NAME := safo
 BUNDLE_ID := com.significa.safo
