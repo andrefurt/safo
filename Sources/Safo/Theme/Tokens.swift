@@ -79,6 +79,10 @@ enum Tokens {
         static let toolbarHeight: CGFloat = 44
         static let windowWidthRatio: CGFloat = 0.4
         static let maxContentWidth: CGFloat = 720
+        static let sidebarCornerRadius: CGFloat = 12
+        static let sidebarBorderWidth: CGFloat = 1
+        static let sidebarPadding: CGFloat = 16
+        static let titlebarHeight: CGFloat = 44
     }
 
     enum Colors {

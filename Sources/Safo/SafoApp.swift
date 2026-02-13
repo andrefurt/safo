@@ -23,6 +23,25 @@ struct SafoApp: App {
                     viewModel.toggleSidebar()
                 }
                 .keyboardShortcut("s", modifiers: [.command, .shift])
+
+                Divider()
+
+                Button("Previous File") {
+                    viewModel.navigateToPrevious()
+                }
+                .keyboardShortcut("[", modifiers: .command)
+
+                Button("Next File") {
+                    viewModel.navigateToNext()
+                }
+                .keyboardShortcut("]", modifiers: .command)
+            }
+
+            CommandGroup(after: .pasteboard) {
+                Button("Copy Markdown Source") {
+                    viewModel.copyToClipboard()
+                }
+                .keyboardShortcut("c", modifiers: [.command, .shift])
             }
         }
     }

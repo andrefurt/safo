@@ -13,6 +13,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let screen = NSScreen.main else { return }
         guard let window = NSApplication.shared.windows.first else { return }
 
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.styleMask.insert(.fullSizeContentView)
+
         let screenFrame = screen.visibleFrame
         let width = screenFrame.width * Tokens.Layout.windowWidthRatio
 

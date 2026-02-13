@@ -23,10 +23,8 @@ struct SidebarView: View {
                 }
             }
         }
-        .listStyle(.sidebar)
-        .frame(minWidth: Tokens.Layout.sidebarWidth, idealWidth: Tokens.Layout.sidebarWidth)
+        .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .background(Tokens.Colors.sidebarBackground)
     }
 
     private func fileRow(url: URL, listing: DirectoryListing) -> some View {

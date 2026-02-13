@@ -4,17 +4,28 @@ struct ContentView: View {
     @ObservedObject var viewModel: DocumentViewModel
 
     var body: some View {
-        NavigationSplitView(columnVisibility: sidebarBinding) {
-            SidebarView(viewModel: viewModel)
-        } detail: {
+        ZStack(alignment: .topLeading) {
             detailContent
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Tokens.Colors.background)
+                .padding(.top, Tokens.Layout.titlebarHeight)
+
+            TitlebarView(viewModel: viewModel)
+                .zIndex(1)
+
+            if viewModel.sidebarVisible {
+                Color.black.opacity(0.001)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        viewModel.toggleSidebar()
+                    }
+                    .zIndex(2)
+
+                floatingSidebar
+                    .transition(.move(edge: .leading).combined(with: .opacity))
+                    .zIndex(3)
+            }
         }
-        .navigationSplitViewStyle(.prominentDetail)
-        .toolbar {
-            ToolbarItems(viewModel: viewModel)
-        }
+        .background(Tokens.Colors.background)
     }
 
     @ViewBuilder
@@ -28,13 +39,32 @@ struct ContentView: View {
         }
     }
 
-    private var sidebarBinding: Binding<NavigationSplitViewVisibility> {
-        Binding(
-            get: { viewModel.sidebarVisible ? .doubleColumn : .detailOnly },
-            set: { newValue in
-                viewModel.sidebarVisible = newValue != .detailOnly
+    private var floatingSidebar: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Button {
+                    viewModel.toggleSidebar()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(Tokens.Colors.textSecondary)
+                }
+                .buttonStyle(.plain)
+                .padding(12)
             }
+
+            SidebarView(viewModel: viewModel)
+        }
+        .frame(width: Tokens.Layout.sidebarWidth)
+        .background(Tokens.Colors.sidebarBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Tokens.Layout.sidebarCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: Tokens.Layout.sidebarCornerRadius)
+                .stroke(Tokens.Colors.separator, lineWidth: Tokens.Layout.sidebarBorderWidth)
         )
+        .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 4)
+        .padding(Tokens.Layout.sidebarPadding)
     }
 }
 
