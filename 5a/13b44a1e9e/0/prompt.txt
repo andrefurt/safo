@@ -1,0 +1,764 @@
+Implement the following plan:
+
+# Plano: Distribuição via Homebrew
+
+## Contexto
+
+O Safo está completo (3 fases) mas não é instalável por outros. Precisamos de um caminho de distribuição para a equipa: `brew install` que instale o .app bundle (com URL scheme) e o CLI (`safo`).
+
+## Estratégia
+
+**Uma cask** no tap `andrefurt/homebrew-safo` que instala tudo: Safo.app em /Applications e o binário `safo` no PATH. Uma cask (não formula) porque precisamos distribuir o .app bundle pré-compilado para que o URL scheme `safo://` funcione.
+
+**Code signing**: ad-hoc por agora (free). Utilizadores fazem right-click > Open na primeira vez. Quando/se houver Apple Developer Program, basta mudar o signing no Makefile.
+
+## Implementação
+
+### 1. Makefile no repo safo
+
+Ficheiro: `Makefile`
+
+Targets:
+- `build`: `swift build -c release`
+- `bundle`: cria estrutura `Safo.app/Contents/{MacOS,Resources,Info.plist}`, copia binários, ad-hoc sign
+- `package`: cria `Safo-{version}.zip` com Safo.app + safo (CLI renomeado)
+- `install`: instala localmente (cp .app para /Applications, safo para /usr/local/bin)
+- `uninstall`: remove ambos
+
+A estrutura do .app bundle:
+```
+Safo.app/
+└── Contents/
+    ├── Info.plist          (de Resources/Info.plist)
+    ├── MacOS/
+    │   └── Safo            (binário compilado)
+    └── Resources/
+```
+
+O CLI binary é renomeado de `safo-cli` para `safo` na instalação.
+
+### 2. Criar repo andrefurt/homebrew-safo
+
+Estrutura:
+```
+homebrew-safo/
+├── Casks/
+│   └── safo.rb
+└── README.md
+```
+
+A cask (`Casks/safo.rb`):
+- Descarrega `Safo-{version}.zip` do GitHub Release do repo safo
+- Instala `Safo.app` em /Applications
+- Instala `safo` binary em PATH via stanza `binary`
+- SHA256 do zip para verificação
+
+### 3. Processo de release
+
+Manual por agora (automatizável com GitHub Actions depois):
+1. Bump version no Makefile
+2. `make package` (gera o zip)
+3. Criar GitHub Release no repo safo, upload o zip
+4. Copiar SHA256, atualizar cask no repo homebrew-safo
+5. Commit e push no homebrew-safo
+
+### 4. Experiência do utilizador
+
+```bash
+brew tap andrefurt/safo
+brew install --cask safo
+
+# Primeira vez: right-click Safo.app > Open (Gatekeeper ad-hoc)
+# Depois disso:
+safo file.md
+```
+
+## Ficheiros a criar/modificar
+
+| Ficheiro | Repo | Ação |
+|----------|------|------|
+| `Makefile` | safo | Criar |
+| `Casks/safo.rb` | homebrew-safo | Criar |
+| `README.md` | homebrew-safo | Criar |
+
+## Verificação
+
+1. `make build` compila sem erros
+2. `make bundle` cria .app funcional (abre, renderiza markdown)
+3. `make package` gera zip com ambos os artefactos
+4. `make install` instala localmente, `safo README.md` abre o app
+5. Criar release, testar `brew tap andrefurt/safo && brew install --cask safo` numa máquina limpa
+
+## Fora de scope (futuro)
+
+- GitHub Actions para automatizar releases
+- Developer ID signing + notarização
+- Homebrew bottles (binários pré-compilados para install mais rápido)
+- Formula separada para quem só quer o CLI sem o .app
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/andrefurt/.claude/projects/-Users-andrefurt-code-safo/92023f7e-249a-4df3-be41-54dff58da4b9.jsonl
+
+---
+
+faz commit e prepara o PR
+
+---
+
+merge o PR
+
+---
+
+cria o release v0.1.0, adicionar readme no github, tags, labels, descrição titulo. ficar com a página completa
+
+---
+
+o que é o sha? não é info sensivel? o que falta fazer?
+
+---
+
+sim, cria e faz push
+
+---
+
+basicamente tenho 2 repos agora? e se fizer actualizações os users recebem notificação para fazer update?
+
+---
+
+cria o github action para automatizar
+
+---
+
+este token é para o homebrew safo ou o safo?
+
+---
+
+sim, merge. Antes disso, preciso que cries a documentação sobre esse processo de release. Talvez colocar no claude.md para não ficar esquecido. decide que melhor sitio por. também queria saber qual é a relação entre o homebrew e o repo normal, o que acontece (trabalho no repo normal se ouver novos updates, actualiza automaticamente o homebrew), explica. e outra coisa, não dá para mudar o nome do repo homebrew para outra coisa? ser só safo o publico e o outro ser safo qualquer coisa?
+
+---
+
+cria o secret
+
+---
+
+qual repo faço isso e em que repo gravo?
+
+---
+
+mas já criei essa HOMEBREW_TAP_TOKEN e guardei no repo homebrew
+
+---
+
+e apago o outro do homebrew?
+
+---
+
+já está, já gravei o token
+
+---
+
+antes de testares com uma release, documenta esse processo. documenta o processo de releases e must follow no claude.md se for o sitio mais adequado.
+
+---
+
+sim, testa
+
+---
+
+mas tem que ter acesso aos dois?
+
+---
+
+que permissões dou?
+
+---
+
+já actualizei o token, lança outra vez
+
+---
+
+está tudo documentado e protocolado? o que fazer para lançar versão nova, colocação das tags, release notes, etc..? para quando fizeres novamente não te esqueceres
+
+---
+
+como assim numa máquina limpa?
+
+---
+
+esquece. como testo o brew install? não tenho versões antigas ou de dev instaladas pois não?
+
+---
+
+não é a homebrew-safo que instalo?
+
+---
+
+erro: ~ ❯ brew install --cask safo
+==> Downloading https://github.com/andrefurt/safo/releases/download/v0.1.1/Safo-
+curl: (56) The requested URL returned error: 404
+
+Error: Download failed on Cask 'safo' with message: Download failed: https://github.com/andrefurt/safo/releases/download/v0.1.1/Safo-0.1.1.zip
+
+---
+
+sim, torna publico. pensava que o homebrew-safo era um clone do repo safo mas publico precisamente para as pessoas instalarem. Tens que me explicar o processo e papel do homebrew como se tivesse no secundário
+
+---
+
+==> Downloading https://github.com/andrefurt/safo/releases/download/v0.1.1/Safo-
+==> Downloading from https://release-assets.githubusercontent.com/github-product
+######################################################################### 100.0%
+==> Installing Cask safo
+==> Moving App 'Safo.app' to '/Applications/Safo.app'
+==> Linking Binary 'safo' to '/opt/homebrew/bin/safo'
+🍺  safo was successfully installed!
+
+---
+
+[Image: source: REDACTED 2026-02-13 at 00.18.00.png]
+
+---
+
+já fiz isso e não abre, mostra novamente isso
+
+---
+
+[Image: source: REDACTED 2026-02-13 at 00.18.58.png]
+
+---
+
+~ ❯ xattr -cr /Applications/Safo.app
+  xattr -cr /opt/homebrew/bin/safo
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/_CodeSignature/CodeResources'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/_CodeSignature/CodeResources'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/_CodeSignature'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/_CodeSignature'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/MacOS/Safo'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/MacOS/Safo'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/MacOS'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/MacOS'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/Resources'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/Resources'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/Info.plist'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents/Info.plist'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app/Contents'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app'
+xattr: [Errno 1] Operation not permitted: '/Applications/Safo.app'
+
+---
+
+isto é seguro?
+
+---
+
+vamos falar sobre os primeiros bugs e fixes:
+- Primeiro, ele abre 2 janelas. corri o safo README.md e abriu duas janelas.
+- segundo, tem dois icons de sidebar no topo. não faz sentido. só precisamos de 1.
+- terceiro, o button de copy parece inativo, e devia estar no canto direito da topbar e não no centro.
+- quarto actualiza as cores da app: figma dark mode: https://www.figma.REDACTED?node-id=119-869&t=aCSjVNaFWH3V6iRv-4
+figma light:https://www.figma.REDACTED?node-id=119-1038&t=aCSjVNaFWH3V6iRv-4 . Não uses cores arbitrarias, segue os nossos standards.
+- Sidebar animation: queria que ao clicar na sidebar collapsed, a sidebar expandia de uma forma muito natural e organica ao estilo da apple. os icons são phosphor.
+
+mostra-me um plano e pensa antes de executar.
+
+---
+
+[Image: source: REDACTED 2026-02-13 at 00.21.26.png]
+
+---
+
+Last login: Fri Feb 13 02:02:01 on ttys003
+
+~ ❯ cp -R dist/Safo.app /Applications/Safo.app
+cp: dist/Safo.app: No such file or directory
+
+~ ❯ open dist/Safo.app
+The file /Users/andrefurt/dist/Safo.app does not exist.
+
+~ ❯
+
+---
+
+não está nada parecido com o figma que mandei. tens a topbar standard, a minha é floating (a terceira img é quando clico no icon e ela expande). Quero que fique exatamente como está. os icons usa os da sf. usa o meu skill de motion se ajudar nas animações
+
+---
+
+[Image: source: REDACTED 2026-02-13 at 02.34.36.png]
+
+[Image: source: REDACTED 2026-02-13 at 02.35.46.png]
+
+[Image: source: REDACTED 2026-02-13 at 02.36.09.png]
+
+---
+
+planeia como nova fase e mostra-me o plano
+
+---
+
+This session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+Analysis:
+Let me chronologically analyze the entire conversation:
+
+1. **Homebrew Distribution Setup**: The user asked to implement a plan for Homebrew distribution of the Safo app. This involved creating a Makefile, homebrew-safo repo, and cask definition.
+
+2. **Makefile Creation**: Created `Makefile` with build, bundle, package, install, uninstall, clean targets. VERSION := 0.1.0. Uses `swift build -c release`, creates Safo.app bundle with Info.plist, ad-hoc code signing, packages zip with app + CLI.
+
+3. **PR and Merge Flow**: Created branch `chore/homebrew-distribution`, PR #4, merged to main.
+
+4. **homebrew-safo Repo**: Created `Casks/safo.rb` and `README.md` at `~/code/homebrew-safo/`. The cask points to GitHub releases.
+
+5. **README and License**: Created README.md and LICENSE (MIT) for the safo repo. PR #5, merged.
+
+6. **Release v0.1.0**: Created first GitHub release with `make package`, uploaded zip, set repo description and topics.
+
+7. **GitHub Action Automation**: User asked to automate releases. Created `.github/workflows/release.yml` triggered on tag push `v*`. Builds on macos-14, runs make package, creates release, updates homebrew-safo cask. PR #6, merged.
+
+8. **Token/Secret Setup Issues**: 
+   - User initially saved HOMEBREW_TAP_TOKEN in wrong repo (homebrew-safo instead of safo)
+   - First Action run failed because release already existed (no --clobber)
+   - Second run failed because token didn't have write access to homebrew-safo
+   - After user fixed token permissions (fine-grained, Contents: Read+write on homebrew-safo), third run succeeded
+
+9. **Release Documentation**: Expanded CLAUDE.md with Distribution and Releases sections. PR #7, merged.
+
+10. **Test Release v0.1.1**: Bumped version, created tag, Action ran successfully. Verified release and cask updated.
+
+11. **Made repo public**: The safo repo was private, causing brew install to fail with 404. Made it public with `gh repo edit --visibility public`.
+
+12. **Brew install succeeded**: User tested `brew install --cask safo` successfully.
+
+13. **Gatekeeper issues**: Ad-hoc signed app blocked by macOS Gatekeeper. Needed `sudo xattr -cr` to remove quarantine attributes for both app and CLI.
+
+14. **First QA Bugs**: User identified 5 bugs from screenshots:
+    - Bug 1: Two windows opening
+    - Bug 2: Two sidebar toggle icons
+    - Bug 3: Copy button looks inactive, wrong position
+    - Bug 4: Colors don't match Figma
+    - Bug 5: Sidebar animation not organic, wants Phosphor icons
+
+15. **Plan for QA fixes**: Created plan, user provided Figma colors via screenshots.
+
+16. **Color values from Figma**:
+    - Dark: bg #181818, sidebar #151514, separator #292929, text primary #D0D0C8, text secondary #83817D
+    - Light: bg #E8E7E3, sidebar #F3F3F1, separator #FFFFFF 20%, text primary #181818, text secondary #21211C
+
+17. **User requirements for colors**: OKLCH in docs, hex in code. No arbitrary values.
+
+18. **Implementation of QA fixes**:
+    - Bug 1: Added `.commands { CommandGroup(replacing: .newItem) {} }` to SafoApp, `NSWindow.allowsAutomaticWindowTabbing = false` to AppDelegate
+    - Bug 2: Removed custom sidebar toggle from ToolbarItems, added keyboard shortcut via .commands in SafoApp
+    - Bug 3: Kept `.primaryAction` placement
+    - Bug 4: Created `NSColor.adaptive()` helper, replaced all system colors with Figma hex values, added sidebarBackground and selectionBackground tokens
+    - Bug 5: Changed animation to `.spring(response: 0.3, dampingFraction: 0.88)`. Phosphor icons FAILED - package doesn't compile with SPM (Bundle.module error). Reverted to SF Symbols.
+
+19. **Major UI Redesign Request**: User showed Figma screenshots revealing a completely different UI paradigm:
+    - No standard macOS toolbar
+    - Custom titlebar with breadcrumb (Safo / Docs / filename.md) inline with traffic lights
+    - Floating sidebar overlay with rounded corners, border, shadows
+    - Three states: no file, file open, sidebar expanded
+
+20. **Current plan being written**: Phase for custom UI to match Figma exactly. Plan involves:
+    - Hiding titlebar via NSWindow configuration
+    - Removing NavigationSplitView entirely
+    - ZStack-based layout with custom TitlebarView
+    - Floating sidebar overlay
+    - Spring animations
+
+The user explicitly said "os icons usa os da sf" (use SF icons) and "usa o meu skill de motion se ajudar nas animações".
+
+The plan was written to the plan file but ExitPlanMode was NOT called yet - the summary request came while still in plan mode.
+
+Summary:
+1. Primary Request and Intent:
+   The user (Andre Furtado, Chief of Design @ Significa) initially requested Homebrew distribution for the Safo app (native macOS markdown viewer). This expanded into: creating a Makefile, setting up a homebrew-safo tap repo, automating releases via GitHub Actions, documenting the process, and then fixing first QA bugs. The most recent request is a **major UI redesign** to match Figma designs showing: hidden standard titlebar, custom breadcrumb navigation inline with traffic lights, and a floating overlay sidebar with rounded corners/border. The user explicitly said: "não está nada parecido com o figma que mandei. tens a topbar standard, a minha é floating... Quero que fique exatamente como está. os icons usa os da sf. usa o meu skill de motion se ajudar nas animações"
+
+2. Key Technical Concepts:
+   - Swift Package Manager (SPM) with macOS 14+ target
+   - Homebrew Cask distribution (`andrefurt/homebrew-safo` tap repo)
+   - GitHub Actions for automated releases (tag-triggered `v*`)
+   - `HOMEBREW_TAP_TOKEN` secret (fine-grained PAT with Contents: Read+write on homebrew-safo repo only)
+   - Ad-hoc code signing (`codesign --force --sign -`)
+   - NSColor adaptive colors with `init(name:dynamicProvider:)` for dark/light mode
+   - OKLCH color documentation standard (docs) with hex implementation (code)
+   - `NSWindow.titlebarAppearsTransparent`, `titleVisibility = .hidden`, `.fullSizeContentView` for hiding titlebar
+   - ZStack-based overlay sidebar replacing NavigationSplitView
+   - Spring animations (`.spring(response: 0.3, dampingFraction: 0.88)`)
+   - Phosphor Icons Swift package DOES NOT WORK with SPM (Bundle.module error) - using SF Symbols instead
+
+3. Files and Code Sections:
+
+   - **`Makefile`** (created)
+     - Build/bundle/package/install/uninstall/clean targets for distributing Safo
+     - VERSION := 0.1.1 (bumped from 0.1.0)
+     - `make package` creates `Safo-{VERSION}.zip` with Safo.app + safo CLI binary
+
+   - **`.github/workflows/release.yml`** (created)
+     - Automated release pipeline triggered on `v*` tag push
+     - Runs on `macos-14`, builds package, creates GitHub Release, updates homebrew-safo cask
+     ```yaml
+     name: Release
+     on:
+       push:
+         tags:
+           - "v*"
+     jobs:
+       release:
+         runs-on: macos-14
+         permissions:
+           contents: write
+         steps:
+           - uses: actions/checkout@v4
+           - name: Extract version from tag
+             run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+           - name: Build and package
+             run: make package VERSION=${{ env.VERSION }}
+           - name: Calculate SHA-256
+             run: |
+               SHA=$(shasum -a 256 Safo-${{ env.VERSION }}.zip | awk '{print $1}')
+               echo "SHA256=$SHA" >> $GITHUB_ENV
+           - name: Create GitHub Release
+             run: |
+               gh release create ${{ github.ref_name }} Safo-${{ env.VERSION }}.zip \
+                 --title "Safo ${{ github.ref_name }}" \
+                 --generate-notes \
+                 --notes-start-tag "$(git tag --sort=-v:refname | sed -n '2p')"
+             env:
+               GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           - name: Update Homebrew cask
+             run: |
+               git clone https://x-access-token:${{ secrets.HOMEBREW_TAP_TOKEN }}@github.com/andrefurt/homebrew-safo.git /tmp/homebrew-safo
+               cd /tmp/homebrew-safo
+               sed -i '' "s/version \".*\"/version \"${{ env.VERSION }}\"/" Casks/safo.rb
+               sed -i '' "s/sha256 \".*\"/sha256 \"${{ env.SHA256 }}\"/" Casks/safo.rb
+               git config user.name "github-actions[bot]"
+               git config user.email "github-actions[bot]@users.noreply.github.com"
+               git add Casks/safo.rb
+               git commit -m "update safo to ${{ env.VERSION }}"
+               git push
+     ```
+
+   - **`~/code/homebrew-safo/Casks/safo.rb`** (created, separate repo)
+     - Homebrew cask definition, automatically updated by GitHub Action
+     ```ruby
+     cask "safo" do
+       version "0.1.1"
+       sha256 "d8cfde223fbff14131f192624261d14737aaa36d7d2e7134f194ce2aa194b4e9"
+       url "https://github.com/andrefurt/safo/releases/download/v#{version}/Safo-#{version}.zip"
+       name "Safo"
+       desc "Native macOS markdown viewer"
+       homepage "https://github.com/andrefurt/safo"
+       depends_on macos: ">= :sonoma"
+       app "Safo.app"
+       binary "safo"
+       zap trash: [
+         "~/Library/Caches/com.significa.safo",
+         "~/Library/Preferences/com.significa.safo.plist",
+       ]
+     end
+     ```
+
+   - **`Sources/Safo/SafoApp.swift`** (modified)
+     - Added `.commands` to disable new window creation and add sidebar shortcut
+     ```swift
+     .handlesExternalEvents(matching: Set(arrayLiteral: "*"))
+     .commands {
+         CommandGroup(replacing: .newItem) {}
+         CommandGroup(after: .sidebar) {
+             Button("Toggle Sidebar") {
+                 viewModel.toggleSidebar()
+             }
+             .keyboardShortcut("s", modifiers: [.command, .shift])
+         }
+     }
+     ```
+
+   - **`Sources/Safo/AppDelegate.swift`** (modified)
+     - Added `NSWindow.allowsAutomaticWindowTabbing = false`
+     ```swift
+     func applicationDidFinishLaunching(_ notification: Notification) {
+         NSWindow.allowsAutomaticWindowTabbing = false
+         DispatchQueue.main.async {
+             self.positionWindow()
+         }
+     }
+     ```
+
+   - **`Sources/Safo/Theme/Tokens.swift`** (modified significantly)
+     - Replaced system colors with Figma hex values using adaptive NSColor
+     - Added new tokens: sidebarBackground, selectionBackground
+     - Changed animation to spring
+     ```swift
+     enum Colors {
+         static let textPrimary = Color(nsColor: .adaptive(light: 0x181818, dark: 0xD0D0C8))
+         static let textSecondary = Color(nsColor: .adaptive(light: 0x21211C, dark: 0x83817D))
+         static let textTertiary = Color(nsColor: .tertiaryLabelColor)
+         static let background = Color(nsColor: .adaptive(light: 0xE8E7E3, dark: 0x181818))
+         static let sidebarBackground = Color(nsColor: .adaptive(light: 0xF3F3F1, dark: 0x151514))
+         static let surfaceElevated = Color(nsColor: .controlBackgroundColor)
+         static let accent = Color.accentColor
+         static let separator = Color(nsColor: .adaptive(light: 0xFFFFFF, lightAlpha: 0.2, dark: 0x292929, darkAlpha: 1.0))
+         static let selectionBackground = Color(nsColor: .adaptive(light: 0xFFFFFF, lightAlpha: 0.3, dark: 0xD0D0C8, darkAlpha: 0.1))
+         static let blockquoteBorder = Color.secondary.opacity(0.3)
+         static let inlineCodeBackground = Color(nsColor: .quaternaryLabelColor).opacity(0.3)
+     }
+
+     enum Animation {
+         static let sidebar: SwiftUI.Animation = .spring(response: 0.3, dampingFraction: 0.88)
+     }
+     ```
+     - Added NSColor.adaptive helper:
+     ```swift
+     extension NSColor {
+         static func adaptive(light: UInt32, lightAlpha: CGFloat = 1.0, dark: UInt32, darkAlpha: CGFloat = 1.0) -> NSColor {
+             NSColor(name: nil) { appearance in
+                 let hex = appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil ? dark : light
+                 let alpha = appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil ? darkAlpha : lightAlpha
+                 let r = CGFloat((hex >> 16) & 0xFF) / 255.0
+                 let g = CGFloat((hex >> 8) & 0xFF) / 255.0
+                 let b = CGFloat(hex & 0xFF) / 255.0
+                 return NSColor(red: r, green: g, blue: b, alpha: alpha)
+             }
+         }
+     }
+     ```
+
+   - **`Sources/Safo/Views/ToolbarItems.swift`** (modified)
+     - Removed custom sidebar toggle button (was duplicating NavigationSplitView's built-in toggle)
+     - Kept navigation and copy buttons with SF Symbols
+
+   - **`Sources/Safo/Views/SidebarView.swift`** (modified)
+     - Added `.scrollContentBackground(.hidden)` and `.background(Tokens.Colors.sidebarBackground)`
+     - Changed selection highlight to use `Tokens.Colors.selectionBackground`
+
+   - **`docs/03-design-tokens.md`** (modified)
+     - Updated Colors section with OKLCH source values + hex implementation values
+     - Updated animation token to spring
+
+   - **`CLAUDE.md`** (modified)
+     - Added Distribution section explaining two-repo setup
+     - Added comprehensive Releases section with steps, rules, and Makefile targets
+
+   - **`README.md`** (created)
+     - Install instructions (Homebrew + source), usage, features, keyboard shortcuts, stack
+
+   - **`LICENSE`** (created) - MIT license
+
+   - **`.gitignore`** (modified) - Added `dist/` and `Safo-*.zip`
+
+4. Errors and Fixes:
+   - **GitHub Action: release already exists (exit code 1)**: `gh release create` failed because v0.1.1 release was created in first run but cask update failed. Fixed by deleting release (`gh release delete v0.1.1 --cleanup-tag`) and re-pushing tag.
+   - **GitHub Action: homebrew-safo push denied (403)**: HOMEBREW_TAP_TOKEN didn't have write access. User had created a fine-grained token without homebrew-safo repo access. Fixed by updating token with Contents: Read+write permission on homebrew-safo.
+   - **HOMEBREW_TAP_TOKEN in wrong repo**: User saved secret in homebrew-safo instead of safo. Explained it needs to be in safo (where the Action runs).
+   - **brew install 404**: safo repo was private, Homebrew can't download from private repos. Fixed by making repo public with `gh repo edit --visibility public`.
+   - **Gatekeeper blocking**: Ad-hoc signed app blocked twice (once for CLI, once for app). Needed `sudo xattr -cr` to remove quarantine.
+   - **Phosphor Icons SPM failure**: `phosphor-icons/swift` package fails to compile with `swift build` (Bundle.module error because xcassets not properly handled by SPM CLI). Reverted the dependency and kept SF Symbols.
+   - **User feedback on colors**: User said "não usar valores arbitrários para cores, e seguir os standards de cor (oklch)". Updated approach to document OKLCH in docs, use hex in code.
+   - **User feedback on UI**: User showed Figma screenshots revealing the design is completely different from what was implemented - floating sidebar, hidden titlebar, breadcrumb navigation. This triggered a complete UI redesign plan.
+
+5. Problem Solving:
+   - Solved Homebrew distribution end-to-end: Makefile, cask, release automation, documentation
+   - Solved QA bugs: double window, duplicate sidebar icon, colors, animation
+   - Identified that Phosphor Swift package doesn't work with SPM CLI builds
+   - Currently planning a major UI refactor to match Figma designs
+
+6. All User Messages:
+   - "Implement the following plan: # Plano: Distribuição via Homebrew..."
+   - "faz commit e prepara o PR"
+   - "merge o PR"
+   - "cria o release v0.1.0, adicionar readme no github, tags, labels, descrição titulo. ficar com a página completa"
+   - "merge o PR" (for README)
+   - "cria o github action para automatizar"
+   - "sim, cria e faz push" (homebrew-safo repo)
+   - "este token é para o homebrew safo ou o safo?"
+   - "mas tem que ter acesso aos dois?"
+   - "que permissões dou?"
+   - "já actualizei o token, lança outra vez"
+   - "qual repo faço isso e em que repo gravo?"
+   - "mas já criei essa HOMEBREW_TAP_TOKEN e guardei no repo homebrew"
+   - "e apago o outro do homebrew?"
+   - "já está, já gravei o token"
+   - "antes de testares com uma release, documenta esse processo..."
+   - "sim, testa"
+   - "como assim numa máquina limpa?"
+   - "como testo o brew install? não tenho versões antigas ou de dev instaladas pois não?"
+   - "não é a homebrew-safo que instalo?"
+   - "erro: Download failed on Cask 'safo'..."
+   - "vamos falar sobre os primeiros bugs e fixes: [5 bugs listed with Figma links]"
+   - "accept, clear context; não usar valores arbitrários para cores, e seguir os standards de cor (oklch), adicionar na documentação esse plano"
+   - "yes, clear context. Uma nota. a sidebar que está no figma é a representação da sidebar fechada e aberta. A animação tem que ser organica e manter a mesma posição no topo, cresce para baixo"
+   - "[Figma color screenshots - light mode sidebar colors]"
+   - "já fiz isso e não abre, mostra novamente isso" (Gatekeeper)
+   - "isto é seguro?" (about sudo xattr)
+   - "basicamente tenho 2 repos agora? e se fizer actualizações os users recebem notificação para fazer update?"
+   - "cria o secret"
+   - "o que é o sha? não é info sensivel? o que falta fazer?"
+   - "está tudo documentado e protocolado?..."
+   - "cp -R dist/Safo.app /Applications/Safo.app - No such file or directory"
+   - "não está nada parecido com o figma que mandei. tens a topbar standard, a minha é floating (a terceira img é quando clico no icon e ela expande). Quero que fique exatamente como está. os icons usa os da sf. usa o meu skill de motion se ajudar nas animações" [with 3 Figma screenshots]
+   - "planeia como nova fase e mostra-me o plano"
+
+7. Pending Tasks:
+   - **Major UI redesign** to match Figma (plan written, awaiting approval via ExitPlanMode):
+     - Hide standard macOS titlebar, keep traffic lights
+     - Replace NavigationSplitView with ZStack overlay
+     - Create custom TitlebarView with breadcrumb navigation
+     - Build floating sidebar with rounded corners, border, shadow
+     - Spring animation for sidebar toggle
+   - Phosphor icons deferred (SPM incompatible, keeping SF Symbols per user instruction)
+   - Previous QA fixes committed on branch `fix/first-qa-bugs` but NOT merged to main yet
+
+8. Current Work:
+   I was in **plan mode** writing the plan for a major UI redesign phase. The plan file at `/Users/andrefurt/.claude/plans/sorted-dazzling-balloon.md` has been written with the full implementation plan. I had NOT yet called `ExitPlanMode` to present the plan for user approval.
+
+   The current git state: branch `fix/first-qa-bugs` with one commit `e840e71` containing the QA fixes (double window, sidebar icon, colors, animation). This has NOT been pushed or merged.
+
+   The plan covers 7 files to modify/create, removing NavigationSplitView entirely, hiding the macOS titlebar, creating a custom TitlebarView with breadcrumb, and building a floating overlay sidebar.
+
+9. Optional Next Step:
+   Call `ExitPlanMode` to present the UI redesign plan to the user for approval. The user explicitly said "planeia como nova fase e mostra-me o plano" and the plan is fully written in the plan file. After approval, execute the plan on the `fix/first-qa-bugs` branch (or create a new branch for this phase).
+
+   Before implementing, should also merge or integrate the existing QA fixes commit, and note that the UI redesign will likely supersede some of those changes (particularly ToolbarItems.swift which will be deleted, and ContentView.swift which will be rewritten).
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/andrefurt/.claude/projects/-Users-andrefurt-code-safo/23e9a61f-32b3-435e-8c67-55c2e1e2f0ff.jsonl
+Please continue the conversation from where we left off without asking the user any further questions. Continue with the last task that you were asked to work on.
+
+---
+
+Base directory for this skill: /Users/andrefurt/.claude/plugins/cache/claude-plugins-official/superpowers/4.3.0/skills/verification-before-completion
+
+# Verification Before Completion
+
+## Overview
+
+Claiming work is complete without verification is dishonesty, not efficiency.
+
+**Core principle:** Evidence before claims, always.
+
+**Violating the letter of this rule is violating the spirit of this rule.**
+
+## The Iron Law
+
+```
+NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+```
+
+If you haven't run the verification command in this message, you cannot claim it passes.
+
+## The Gate Function
+
+```
+BEFORE claiming any status or expressing satisfaction:
+
+1. IDENTIFY: What command proves this claim?
+2. RUN: Execute the FULL command (fresh, complete)
+3. READ: Full output, check exit code, count failures
+4. VERIFY: Does output confirm the claim?
+   - If NO: State actual status with evidence
+   - If YES: State claim WITH evidence
+5. ONLY THEN: Make the claim
+
+Skip any step = lying, not verifying
+```
+
+## Common Failures
+
+| Claim | Requires | Not Sufficient |
+|-------|----------|----------------|
+| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
+| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
+| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
+| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Regression test works | Red-green cycle verified | Test passes once |
+| Agent completed | VCS diff shows changes | Agent reports "success" |
+| Requirements met | Line-by-line checklist | Tests passing |
+
+## Red Flags - STOP
+
+- Using "should", "probably", "seems to"
+- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- About to commit/push/PR without verification
+- Trusting agent success reports
+- Relying on partial verification
+- Thinking "just this once"
+- Tired and wanting work over
+- **ANY wording implying success without having run verification**
+
+## Rationalization Prevention
+
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "Partial check is enough" | Partial proves nothing |
+| "Different words so rule doesn't apply" | Spirit over letter |
+
+## Key Patterns
+
+**Tests:**
+```
+✅ [Run test command] [See: 34/34 pass] "All tests pass"
+❌ "Should pass now" / "Looks correct"
+```
+
+**Regression tests (TDD Red-Green):**
+```
+✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+❌ "I've written a regression test" (without red-green verification)
+```
+
+**Build:**
+```
+✅ [Run build] [See: exit 0] "Build passes"
+❌ "Linter passed" (linter doesn't check compilation)
+```
+
+**Requirements:**
+```
+✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+❌ "Tests pass, phase complete"
+```
+
+**Agent delegation:**
+```
+✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
+❌ Trust agent report
+```
+
+## Why This Matters
+
+From 24 failure memories:
+- your human partner said "I don't believe you" - trust broken
+- Undefined functions shipped - would crash
+- Missing requirements shipped - incomplete features
+- Time wasted on false completion → redirect → rework
+- Violates: "Honesty is a core value. If you lie, you'll be replaced."
+
+## When To Apply
+
+**ALWAYS before:**
+- ANY variation of success/completion claims
+- ANY expression of satisfaction
+- ANY positive statement about work state
+- Committing, PR creation, task completion
+- Moving to next task
+- Delegating to agents
+
+**Rule applies to:**
+- Exact phrases
+- Paraphrases and synonyms
+- Implications of success
+- ANY communication suggesting completion/correctness
+
+## The Bottom Line
+
+**No shortcuts for verification.**
+
+Run the command. Read the output. THEN claim the result.
+
+This is non-negotiable.
