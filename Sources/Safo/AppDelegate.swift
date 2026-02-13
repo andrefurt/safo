@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
         window.styleMask.insert(.fullSizeContentView)
+        window.toolbar = nil
 
         let screenFrame = screen.visibleFrame
         let width = screenFrame.width * Tokens.Layout.windowWidthRatio
