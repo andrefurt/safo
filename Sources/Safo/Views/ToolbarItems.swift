@@ -8,13 +8,6 @@ struct ToolbarItems: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigation) {
             Button {
-                viewModel.toggleSidebar()
-            } label: {
-                Image(systemName: "sidebar.leading")
-            }
-            .keyboardShortcut("s", modifiers: [.command, .shift])
-
-            Button {
                 viewModel.navigateToPrevious()
             } label: {
                 Image(systemName: "chevron.left")

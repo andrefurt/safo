@@ -25,6 +25,8 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         .frame(minWidth: Tokens.Layout.sidebarWidth, idealWidth: Tokens.Layout.sidebarWidth)
+        .scrollContentBackground(.hidden)
+        .background(Tokens.Colors.sidebarBackground)
     }
 
     private func fileRow(url: URL, listing: DirectoryListing) -> some View {
@@ -40,7 +42,7 @@ struct SidebarView: View {
         }
         .buttonStyle(.plain)
         .listRowBackground(
-            isCurrent ? Tokens.Colors.accent.opacity(0.1) : Color.clear
+            isCurrent ? Tokens.Colors.selectionBackground : Color.clear
         )
     }
 }

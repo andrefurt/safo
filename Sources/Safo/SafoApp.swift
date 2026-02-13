@@ -16,6 +16,15 @@ struct SafoApp: App {
                 }
         }
         .handlesExternalEvents(matching: Set(arrayLiteral: "*"))
+        .commands {
+            CommandGroup(replacing: .newItem) {}
+            CommandGroup(after: .sidebar) {
+                Button("Toggle Sidebar") {
+                    viewModel.toggleSidebar()
+                }
+                .keyboardShortcut("s", modifiers: [.command, .shift])
+            }
+        }
     }
 
     private func handleOpenURL(_ url: URL) {

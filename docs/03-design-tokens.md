@@ -42,19 +42,21 @@ H6 uses secondary text color to differentiate from body at similar size.
 
 ## Colors
 
-Semantic colors that adapt automatically to dark/light mode.
+Custom colors defined per appearance (dark/light). Source values in OKLCH, implemented as hex in `Tokens.swift` via `NSColor.adaptive()`.
 
-| Token | SwiftUI value | Usage |
-|-------|--------------|-------|
-| `textPrimary` | `.primary` | Body text, headings |
-| `textSecondary` | `.secondary` | H6, captions, metadata |
-| `textTertiary` | `.tertiary` | Placeholder, disabled |
-| `background` | `Color(.windowBackgroundColor)` | Main content background |
-| `surfaceElevated` | `Color(.controlBackgroundColor)` | Code blocks, sidebar background |
-| `accent` | `.accentColor` | Links |
-| `separator` | `Color(.separatorColor)` | Table borders, HR, dividers |
-| `blockquoteBorder` | `.secondary.opacity(0.3)` | Blockquote left border |
-| `inlineCodeBackground` | `Color(.quaternaryLabelColor).opacity(0.3)` | Inline code background |
+| Token | Light (hex) | Dark (hex) | Light (oklch) | Dark (oklch) | Usage |
+|-------|-------------|------------|---------------|--------------|-------|
+| `textPrimary` | `#181818` | `#D0D0C8` | `oklch(0.13 0 0)` | `oklch(0.84 0.01 100)` | Body text, headings |
+| `textSecondary` | `#21211C` | `#83817D` | `oklch(0.18 0.01 95)` | `oklch(0.58 0.01 85)` | H6, captions, metadata |
+| `textTertiary` | system | system | - | - | Placeholder, disabled |
+| `background` | `#E8E7E3` | `#181818` | `oklch(0.92 0.01 90)` | `oklch(0.13 0 0)` | Main content background |
+| `sidebarBackground` | `#F3F3F1` | `#151514` | `oklch(0.96 0 90)` | `oklch(0.11 0 0)` | Sidebar background |
+| `surfaceElevated` | system | system | - | - | Code blocks |
+| `accent` | system | system | - | - | Links |
+| `separator` | `#FFFFFF` 20% | `#292929` | `oklch(1 0 0 / 0.2)` | `oklch(0.2 0 0)` | Table borders, HR, dividers |
+| `selectionBackground` | `#FFFFFF` 30% | `#D0D0C8` 10% | `oklch(1 0 0 / 0.3)` | `oklch(0.84 0.01 100 / 0.1)` | Selected file in sidebar |
+| `blockquoteBorder` | `.secondary` 30% | `.secondary` 30% | - | - | Blockquote left border |
+| `inlineCodeBackground` | system 30% | system 30% | - | - | Inline code background |
 
 ### Code Block Colors (Splash theme)
 
@@ -104,7 +106,7 @@ Dark mode palette (adapts for light):
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `sidebarAnimation` | `.easeInOut(duration: 0.2)` | Sidebar toggle |
+| `sidebarAnimation` | `.spring(response: 0.3, dampingFraction: 0.88)` | Sidebar toggle |
 
 ## Implementation
 

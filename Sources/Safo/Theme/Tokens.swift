@@ -82,13 +82,15 @@ enum Tokens {
     }
 
     enum Colors {
-        static let textPrimary = Color.primary
-        static let textSecondary = Color.secondary
+        static let textPrimary = Color(nsColor: .adaptive(light: 0x181818, dark: 0xD0D0C8))
+        static let textSecondary = Color(nsColor: .adaptive(light: 0x21211C, dark: 0x83817D))
         static let textTertiary = Color(nsColor: .tertiaryLabelColor)
-        static let background = Color(nsColor: .windowBackgroundColor)
+        static let background = Color(nsColor: .adaptive(light: 0xE8E7E3, dark: 0x181818))
+        static let sidebarBackground = Color(nsColor: .adaptive(light: 0xF3F3F1, dark: 0x151514))
         static let surfaceElevated = Color(nsColor: .controlBackgroundColor)
         static let accent = Color.accentColor
-        static let separator = Color(nsColor: .separatorColor)
+        static let separator = Color(nsColor: .adaptive(light: 0xFFFFFF, lightAlpha: 0.2, dark: 0x292929, darkAlpha: 1.0))
+        static let selectionBackground = Color(nsColor: .adaptive(light: 0xFFFFFF, lightAlpha: 0.3, dark: 0xD0D0C8, darkAlpha: 0.1))
         static let blockquoteBorder = Color.secondary.opacity(0.3)
         static let inlineCodeBackground = Color(nsColor: .quaternaryLabelColor).opacity(0.3)
     }
@@ -118,7 +120,7 @@ enum Tokens {
     }
 
     enum Animation {
-        static let sidebar: SwiftUI.Animation = .easeInOut(duration: 0.2)
+        static let sidebar: SwiftUI.Animation = .spring(response: 0.3, dampingFraction: 0.88)
     }
 }
 
@@ -130,5 +132,20 @@ extension Color {
         let g = Double((hex >> 8) & 0xFF) / 255.0
         let b = Double(hex & 0xFF) / 255.0
         self.init(red: r, green: g, blue: b)
+    }
+}
+
+// MARK: - Adaptive NSColor (dark/light)
+
+extension NSColor {
+    static func adaptive(light: UInt32, lightAlpha: CGFloat = 1.0, dark: UInt32, darkAlpha: CGFloat = 1.0) -> NSColor {
+        NSColor(name: nil) { appearance in
+            let hex = appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil ? dark : light
+            let alpha = appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil ? darkAlpha : lightAlpha
+            let r = CGFloat((hex >> 16) & 0xFF) / 255.0
+            let g = CGFloat((hex >> 8) & 0xFF) / 255.0
+            let b = CGFloat(hex & 0xFF) / 255.0
+            return NSColor(red: r, green: g, blue: b, alpha: alpha)
+        }
     }
 }
